@@ -1,0 +1,15 @@
+{
+  "originHash" : "4b3ca934d8800708acc251b1176c875d8431ff6085628e559b8faf494353c9a1",
+  "pins" : [
+    {
+      "identity" : "japanesedateconverter",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Masaki-JP/JapaneseDateConverter",
+      "state" : {
+        "revision" : "5a6d4a71c11f1ac8a8f9ac6ff076cf38de4a1920",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}
