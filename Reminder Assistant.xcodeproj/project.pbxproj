@@ -13,6 +13,7 @@
 		4C1912A12B9F2F8C00D208F5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C1912A02B9F2F8C00D208F5 /* Preview Assets.xcassets */; };
 		4C1912A92B9F310800D208F5 /* JapaneseDateConverter in Frameworks */ = {isa = PBXBuildFile; productRef = 4C1912A82B9F310800D208F5 /* JapaneseDateConverter */; };
 		4CD0A9582BA2E2B000CE5A2F /* FloatingAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0A9572BA2E2B000CE5A2F /* FloatingAlert.swift */; };
+		4CD0A95A2BA2E32800CE5A2F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0A9592BA2E32800CE5A2F /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		4C19129D2B9F2F8C00D208F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C1912A02B9F2F8C00D208F5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4CD0A9572BA2E2B000CE5A2F /* FloatingAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingAlert.swift; sourceTree = "<group>"; };
+		4CD0A9592BA2E32800CE5A2F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 				4C1912992B9F2F8B00D208F5 /* Reminder_AssistantApp.swift */,
 				4C19129B2B9F2F8B00D208F5 /* ContentView.swift */,
 				4CD0A9572BA2E2B000CE5A2F /* FloatingAlert.swift */,
+				4CD0A9592BA2E32800CE5A2F /* SettingsView.swift */,
 				4C19129D2B9F2F8C00D208F5 /* Assets.xcassets */,
 				4C19129F2B9F2F8C00D208F5 /* Preview Content */,
 			);
@@ -149,6 +152,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C19129C2B9F2F8B00D208F5 /* ContentView.swift in Sources */,
+				4CD0A95A2BA2E32800CE5A2F /* SettingsView.swift in Sources */,
 				4C19129A2B9F2F8B00D208F5 /* Reminder_AssistantApp.swift in Sources */,
 				4CD0A9582BA2E2B000CE5A2F /* FloatingAlert.swift in Sources */,
 			);
