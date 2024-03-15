@@ -36,8 +36,7 @@ struct FloatingAlert: View {
         .padding(.top, 35)
     }
 
-    struct Information: Identifiable {
-        let id = UUID()
+    struct Information {
         let title: String
         let description: String
         let descriptionAlignment: TextAlignment
