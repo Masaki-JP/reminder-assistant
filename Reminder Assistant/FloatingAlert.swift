@@ -25,7 +25,7 @@ struct FloatingAlert: View {
             .background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .overlay(alignment: .top) {
-                borderdCircleImage(size: 60, borderColor: backgroundColor)
+                borderdCircleImage(size: 60)
                     .padding(.top, -30)
             }
             .shadow(color: .clear, radius: 0)
@@ -73,7 +73,7 @@ struct FloatingAlert: View {
     }
 
     @ViewBuilder
-    func borderdCircleImage(size: CGFloat, borderColor: Color) -> some View {
+    func borderdCircleImage(size: CGFloat) -> some View {
         Circle()
             .foregroundStyle(imageColor)
             .frame(width: size, height: size)
@@ -84,7 +84,7 @@ struct FloatingAlert: View {
                     .foregroundStyle(.white)
                     .padding()
                 Circle()
-                    .stroke(borderColor, lineWidth: 5)
+                    .stroke(backgroundColor, lineWidth: 5)
                     .frame(width: 60, height: 60)
             }
     }
