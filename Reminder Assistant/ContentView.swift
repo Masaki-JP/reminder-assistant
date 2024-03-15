@@ -48,10 +48,8 @@ struct ContentView: View {
                 )
                 .foregroundStyle(foregroundColor)
                 .padding(.top, 25)
-                ReminderCreateButton(text: "リマインダー作成", color: foregroundColor) {
-                    focus = nil
-                }
-                .padding(.top, 25)
+                reminderCreateButton
+                    .padding(.top, 25)
             }
             .padding(.horizontal, 30)
         }
@@ -95,18 +93,12 @@ struct ContentView: View {
     var backgroundColor: Color {
         colorScheme == .light ? .white : .init(red: 0.05, green: 0.05, blue: 0.15)
     }
-}
 
-struct ReminderCreateButton: View {
-    let text: String
-    let color: Color
-    let action: @MainActor () -> Void
-
-    var body: some View {
+    var reminderCreateButton: some View {
         Button {
-            action()
+            focus = nil
         } label: {
-            Text(text)
+            Text("リマインダー作成")
                 .font(.title3)
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
@@ -114,7 +106,7 @@ struct ReminderCreateButton: View {
                 .frame(maxWidth: .infinity)
         }
         .buttonStyle(.borderedProminent)
-        .tint(color)
+        .tint(foregroundColor)
     }
 }
 
