@@ -11,10 +11,12 @@ struct LabeledMultipleTextField: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(title)
+                .fontWeight(.semibold)
             TextField("", text: text, axis: .vertical)
                 .focused(focusState, equals: focusCase)
                 .lineLimit(lineLimit)
                 .foregroundStyle(colorScheme == .light ? .black : .white)
+                .padding(.top, 3)
             Rectangle()
                 .frame(maxWidth: .infinity)
                 .frame(height: 1)

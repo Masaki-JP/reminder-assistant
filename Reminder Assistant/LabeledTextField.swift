@@ -12,6 +12,7 @@ struct LabeledTextField: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(title)
+                .fontWeight(.semibold)
             RepresentedUITextFieldWrapper(
                 text: text,
                 focusState: focusState,
@@ -20,6 +21,7 @@ struct LabeledTextField: View {
                 dismissKeyboardAfterCompletion: dismissKeyboardAfterCompletion,
                 onReturnAction: onReturnAction
             )
+            .padding(.top, 3)
             Rectangle()
                 .frame(maxWidth: .infinity)
                 .frame(height: 1)
