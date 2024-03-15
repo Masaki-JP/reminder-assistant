@@ -5,6 +5,8 @@ struct FloatingAlert: View {
     let title: String
     let description: String
     let descriptionAlignment: TextAlignment
+    let imageName: String
+    let imageColor: Color
 
     var body: some View {
         VStack(spacing: 0) {
@@ -43,6 +45,14 @@ struct FloatingAlert: View {
         let imageColor: Color
     }
 
+    init(_ information: Information) {
+        self.title = information.title
+        self.description = information.description
+        self.descriptionAlignment = information.descriptionAlignment
+        self.imageName = information.imageName
+        self.imageColor = information.imageColor
+    }
+
     var titleText: some View {
         ViewThatFits(in: .horizontal) {
             ForEach(0..<10) { i in
@@ -51,12 +61,6 @@ struct FloatingAlert: View {
                     .lineLimit(1)
             }
         }
-    }
-
-    init(title: String, description: String, descriptionAlignment: TextAlignment = .center) {
-        self.title = title
-        self.description = description
-        self.descriptionAlignment = descriptionAlignment
     }
 
     var descriptionText: some View {
@@ -71,10 +75,10 @@ struct FloatingAlert: View {
     @ViewBuilder
     func borderdCircleImage(size: CGFloat, borderColor: Color) -> some View {
         Circle()
-            .foregroundStyle(.blue)
+            .foregroundStyle(imageColor)
             .frame(width: size, height: size)
             .overlay {
-                Image(systemName: "hand.thumbsup.fill")
+                Image(systemName: imageName)
                     .resizable()
                     .scaledToFit()
                     .foregroundStyle(.white)
@@ -86,18 +90,22 @@ struct FloatingAlert: View {
     }
 }
 
-#Preview("Light") {
-    FloatingAlert(
-        title: "Success!!",
-        description: "美容院の予約\n(2024年3月10日 21:00)"
+private let floatingAlertSample = FloatingAlert(
+    .init(
+        title: "Success",
+        description: "美容院の予約\n(2024年3月10日 21:00)",
+        descriptionAlignment: .center,
+        imageName: "hand.thumbsup.fill",
+        imageColor: .blue
     )
-    .preferredColorScheme(.light)
+)
+
+#Preview("Light") {
+    floatingAlertSample
+        .preferredColorScheme(.light)
 }
 
 #Preview("Dark") {
-    FloatingAlert(
-        title: "Success!!",
-        description: "美容院の予約\n(2024年3月10日 21:00)"
-    )
-    .preferredColorScheme(.dark)
+    floatingAlertSample
+        .preferredColorScheme(.dark)
 }
