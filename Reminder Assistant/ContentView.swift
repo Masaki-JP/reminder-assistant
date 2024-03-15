@@ -18,11 +18,11 @@ struct ContentView: View {
                         height: focus == nil ? 230 : 0
                     )
                     .padding()
-                LabeledTextField(labelText: "名前", text: $title, foregroundColor: foregroundColor, backgroundColor: backgroundColor, focus: $focus, focusStateValue: .title)
+                OldLabeledTextField(labelText: "名前", text: $title, foregroundColor: foregroundColor, backgroundColor: backgroundColor, focus: $focus, focusStateValue: .title)
                     .padding(.top)
-                LabeledTextField(labelText: "期限", text: $deadline, foregroundColor: foregroundColor, backgroundColor: backgroundColor, focus: $focus, focusStateValue: .deadline)
+                OldLabeledTextField(labelText: "期限", text: $deadline, foregroundColor: foregroundColor, backgroundColor: backgroundColor, focus: $focus, focusStateValue: .deadline)
                     .padding(.top, 25)
-                LabeledTextField(labelText: "注釈", axix: .vertical, lineLimit: 4, text: $notes, foregroundColor: foregroundColor, backgroundColor: backgroundColor, focus: $focus, focusStateValue: .notes)
+                OldLabeledTextField(labelText: "注釈", axix: .vertical, lineLimit: 4, text: $notes, foregroundColor: foregroundColor, backgroundColor: backgroundColor, focus: $focus, focusStateValue: .notes)
                     .padding(.top, 25)
                 ReminderCreateButton(text: "リマインダー作成", color: foregroundColor) {
                     focus = nil
@@ -41,6 +41,10 @@ struct ContentView: View {
                     .foregroundColor(.secondary)
             }
         }
+    }
+
+    enum Focus {
+        case title, deadline, notes
     }
 
     var headerText: some View {
@@ -69,13 +73,7 @@ struct ContentView: View {
     }
 }
 
-enum Focus {
-    case title
-    case deadline
-    case notes
-}
-
-struct LabeledTextField: View {
+struct OldLabeledTextField: View {
     let labelText: String
     var axix = Axis.horizontal
     var lineLimit = 1
@@ -85,8 +83,8 @@ struct LabeledTextField: View {
     var foregroundColor: Color
     var backgroundColor: Color
 
-    var focus: FocusState<Focus?>.Binding
-    var focusStateValue: Focus
+    var focus: FocusState<ContentView.Focus?>.Binding
+    var focusStateValue: ContentView.Focus
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
