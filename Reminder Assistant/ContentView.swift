@@ -18,12 +18,36 @@ struct ContentView: View {
                         height: focus == nil ? 230 : 0
                     )
                     .padding()
-                OldLabeledTextField(labelText: "名前", text: $title, foregroundColor: foregroundColor, backgroundColor: backgroundColor, focus: $focus, focusStateValue: .title)
-                    .padding(.top)
-                OldLabeledTextField(labelText: "期限", text: $deadline, foregroundColor: foregroundColor, backgroundColor: backgroundColor, focus: $focus, focusStateValue: .deadline)
-                    .padding(.top, 25)
-                OldLabeledTextField(labelText: "注釈", axix: .vertical, lineLimit: 4, text: $notes, foregroundColor: foregroundColor, backgroundColor: backgroundColor, focus: $focus, focusStateValue: .notes)
-                    .padding(.top, 25)
+                LabeledTextField(
+                    title: "名前",
+                    text: $title,
+                    focusState: $focus,
+                    focusCase: .title,
+                    returnKeyType: .next,
+                    dismissKeyboardAfterCompletion: false,
+                    onReturnAction: { focus = .deadline }
+                )
+                .foregroundStyle(foregroundColor)
+                LabeledTextField(
+                    title: "期限",
+                    text: $deadline,
+                    focusState: $focus,
+                    focusCase: .deadline,
+                    returnKeyType: .done,
+                    dismissKeyboardAfterCompletion: true,
+                    onReturnAction: { print("リマインダー作成") }
+                )
+                .foregroundStyle(foregroundColor)
+                .padding(.top, 25)
+                LabeledMultipleTextField(
+                    title: "注釈",
+                    text: $notes,
+                    lineLimit: 5,
+                    focusState: $focus,
+                    focusCase: .notes
+                )
+                .foregroundStyle(foregroundColor)
+                .padding(.top, 25)
                 ReminderCreateButton(text: "リマインダー作成", color: foregroundColor) {
                     focus = nil
                 }
@@ -70,49 +94,6 @@ struct ContentView: View {
 
     var backgroundColor: Color {
         colorScheme == .light ? .white : .init(red: 0.05, green: 0.05, blue: 0.15)
-    }
-}
-
-struct OldLabeledTextField: View {
-    let labelText: String
-    var axix = Axis.horizontal
-    var lineLimit = 1
-
-    @Binding var text: String
-
-    var foregroundColor: Color
-    var backgroundColor: Color
-
-    var focus: FocusState<ContentView.Focus?>.Binding
-    var focusStateValue: ContentView.Focus
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text(labelText)
-                .frame(alignment: .leading)
-                .background(backgroundColor)
-                .fontWeight(.semibold)
-                .foregroundColor(foregroundColor)
-                .padding(.leading, 1)
-                .padding(.bottom, 4)
-                .onTapGesture {
-                    guard focus.wrappedValue != focusStateValue else { return }
-                    focus.wrappedValue = focusStateValue
-                }
-            TextField("", text: $text, axis: axix)
-                .lineLimit(lineLimit)
-                .frame(alignment: .leading)
-                .padding(.leading, 2)
-                .focused(focus, equals: focusStateValue)
-            RoundedRectangle(cornerRadius: 1)
-                .foregroundStyle(foregroundColor)
-                .frame(height: 1)
-                .padding(.top, 3)
-                .onTapGesture {
-                    guard focus.wrappedValue != focusStateValue else { return }
-                    focus.wrappedValue = focusStateValue
-                }
-        }
     }
 }
 
