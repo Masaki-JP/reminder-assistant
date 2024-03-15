@@ -34,6 +34,15 @@ struct FloatingAlert: View {
         .padding(.top, 35)
     }
 
+    struct Information: Identifiable {
+        let id = UUID()
+        let title: String
+        let description: String
+        let descriptionAlignment: TextAlignment
+        let imageName: String
+        let imageColor: Color
+    }
+
     var titleText: some View {
         ViewThatFits(in: .horizontal) {
             ForEach(0..<10) { i in
