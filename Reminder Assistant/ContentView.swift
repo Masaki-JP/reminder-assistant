@@ -5,6 +5,7 @@ struct ContentView: View {
     @State private var deadline = ""
     @State private var notes = ""
     @FocusState private var focus: Focus?
+    @State private var floatingAlertInformation: FloatingAlert.Information?
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
@@ -33,6 +34,24 @@ struct ContentView: View {
             if focus == nil {
                 Button("Show App Settings") {}
                     .foregroundColor(.secondary)
+            }
+        }
+        .overlay {
+            if let info = floatingAlertInformation {
+                Color(colorScheme == .light ? .gray : .black).opacity(0.5)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        title.removeAll()
+                        deadline.removeAll()
+                        notes.removeAll()
+                        withAnimation(.easeIn(duration: 0.25)) {
+                            floatingAlertInformation = nil
+                        }
+                    }
+                FloatingAlert(info)
+                    .frame(maxHeight: .infinity)
+                    .ignoresSafeArea()
+                    .transition(.move(edge: .bottom))
             }
         }
     }
@@ -106,6 +125,15 @@ struct ContentView: View {
     var reminderCreateButton: some View {
         Button {
             focus = nil
+            withAnimation(.easeOut(duration: 0.25)) {
+                floatingAlertInformation = .init(
+                    title: "Success!!",
+                    description: "アプリ道場サロン勉強会\n(2024年3月15日 20:00)",
+                    descriptionAlignment: .center,
+                    imageName: "swift",
+                    imageColor: foregroundColor
+                )
+            }
         } label: {
             Text("リマインダー作成")
                 .font(.title3)
