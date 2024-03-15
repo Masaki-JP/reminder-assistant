@@ -57,13 +57,9 @@ struct FloatingAlert: View {
     }
 
     var titleText: some View {
-        ViewThatFits(in: .horizontal) {
-            ForEach(0..<10) { i in
-                Text(title)
-                    .font(.custom("Rockwell-Regular", size: 25 - CGFloat(i)))
-                    .lineLimit(1)
-            }
-        }
+        Text(title)
+            .font(.custom("Rockwell-Regular", size: 25))
+            .lineLimit(1)
     }
 
     var descriptionText: some View {
