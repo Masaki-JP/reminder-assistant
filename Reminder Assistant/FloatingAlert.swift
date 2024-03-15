@@ -52,6 +52,10 @@ struct FloatingAlert: View {
         self.imageColor = information.imageColor
     }
 
+    var backgroundColor: Color {
+        colorScheme == .light ? .white : .init(red: 0.125, green: 0.125, blue: 0.125)
+    }
+
     var titleText: some View {
         ViewThatFits(in: .horizontal) {
             ForEach(0..<10) { i in
@@ -65,10 +69,6 @@ struct FloatingAlert: View {
     var descriptionText: some View {
         Text(description)
             .multilineTextAlignment(descriptionAlignment)
-    }
-
-    var backgroundColor: Color {
-        colorScheme == .light ? .white : .init(red: 0.125, green: 0.125, blue: 0.125)
     }
 
     @ViewBuilder
