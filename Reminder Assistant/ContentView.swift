@@ -28,7 +28,6 @@ struct ContentView: View {
         }
         .scrollDisabled(focus == nil)
         .scrollIndicators(.hidden)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(backgroundColor)
         .safeAreaInset(edge: .bottom) {
             if focus == nil {
