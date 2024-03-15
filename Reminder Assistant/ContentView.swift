@@ -13,51 +13,21 @@ struct ContentView: View {
                 headerText
                     .padding(.top, 30)
                 resizableImage
-                    .frame(
-                        width: focus == nil ? 230 : 0,
-                        height: focus == nil ? 230 : 0
-                    )
+                    .frame(width: focus == nil ? 230 : 0, height: focus == nil ? 230 : 0)
                     .padding()
-                LabeledTextField(
-                    title: "名前",
-                    text: $title,
-                    focusState: $focus,
-                    focusCase: .title,
-                    returnKeyType: .next,
-                    dismissKeyboardAfterCompletion: false,
-                    onReturnAction: { focus = .deadline }
-                )
-                .foregroundStyle(foregroundColor)
-                LabeledTextField(
-                    title: "期限",
-                    text: $deadline,
-                    focusState: $focus,
-                    focusCase: .deadline,
-                    returnKeyType: .done,
-                    dismissKeyboardAfterCompletion: true,
-                    onReturnAction: { print("リマインダー作成") }
-                )
-                .foregroundStyle(foregroundColor)
-                .padding(.top, 25)
-                LabeledMultipleTextField(
-                    title: "注釈",
-                    text: $notes,
-                    lineLimit: 5,
-                    focusState: $focus,
-                    focusCase: .notes
-                )
-                .foregroundStyle(foregroundColor)
-                .padding(.top, 25)
-                ReminderCreateButton(text: "リマインダー作成", color: foregroundColor) {
-                    focus = nil
-                }
-                .padding(.top, 25)
+                titleTextField
+                    .padding(.top, 3)
+                deadlineTextField
+                    .padding(.top, 25)
+                noteTextField
+                    .padding(.top, 25)
+                reminderCreateButton
+                    .padding(.top, 25)
             }
             .padding(.horizontal, 30)
         }
         .scrollDisabled(focus == nil)
         .scrollIndicators(.hidden)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(backgroundColor)
         .safeAreaInset(edge: .bottom) {
             if focus == nil {
@@ -69,6 +39,14 @@ struct ContentView: View {
 
     enum Focus {
         case title, deadline, notes
+    }
+
+    var foregroundColor: Color {
+        colorScheme == .light ? .init(red: 64/255, green: 123/255, blue: 255/255) : .init(red: 64/255, green: 123/255, blue: 255/255)
+    }
+
+    var backgroundColor: Color {
+        colorScheme == .light ? .white : .init(red: 0.05, green: 0.05, blue: 0.15)
     }
 
     var headerText: some View {
@@ -88,25 +66,48 @@ struct ContentView: View {
             .scaledToFit()
     }
 
-    var foregroundColor: Color {
-        colorScheme == .light ? .init(red: 64/255, green: 123/255, blue: 255/255) : .init(red: 64/255, green: 123/255, blue: 255/255)
+    var titleTextField: some View {
+        LabeledTextField(
+            title: "名前",
+            text: $title,
+            focusState: $focus,
+            focusCase: .title,
+            returnKeyType: .next,
+            dismissKeyboardAfterCompletion: false,
+            onReturnAction: { focus = .deadline }
+        )
+        .foregroundStyle(foregroundColor)
     }
 
-    var backgroundColor: Color {
-        colorScheme == .light ? .white : .init(red: 0.05, green: 0.05, blue: 0.15)
+    var deadlineTextField: some View {
+        LabeledTextField(
+            title: "期限",
+            text: $deadline,
+            focusState: $focus,
+            focusCase: .deadline,
+            returnKeyType: .done,
+            dismissKeyboardAfterCompletion: true,
+            onReturnAction: { print("リマインダー作成") }
+        )
+        .foregroundStyle(foregroundColor)
     }
-}
 
-struct ReminderCreateButton: View {
-    let text: String
-    let color: Color
-    let action: @MainActor () -> Void
+    var noteTextField: some View {
+        LabeledMultipleTextField(
+            title: "注釈",
+            text: $notes,
+            lineLimit: 5,
+            focusState: $focus,
+            focusCase: .notes
+        )
+        .foregroundStyle(foregroundColor)
+    }
 
-    var body: some View {
+    var reminderCreateButton: some View {
         Button {
-            action()
+            focus = nil
         } label: {
-            Text(text)
+            Text("リマインダー作成")
                 .font(.title3)
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
@@ -114,7 +115,7 @@ struct ReminderCreateButton: View {
                 .frame(maxWidth: .infinity)
         }
         .buttonStyle(.borderedProminent)
-        .tint(color)
+        .tint(foregroundColor)
     }
 }
 
