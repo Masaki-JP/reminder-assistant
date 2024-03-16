@@ -3,7 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var title = ""
     @State private var deadline = ""
-    @State private var note = ""
+    @State private var notes = ""
     @FocusState private var focus: Focus?
     @State private var floatingAlertInformation: FloatingAlert.Information?
     @Environment(\.colorScheme) private var colorScheme
@@ -43,7 +43,7 @@ struct ContentView: View {
                     .onTapGesture {
                         title.removeAll()
                         deadline.removeAll()
-                        note.removeAll()
+                        notes.removeAll()
                         withAnimation(.easeIn(duration: 0.25)) {
                             floatingAlertInformation = nil
                         }
@@ -114,7 +114,7 @@ struct ContentView: View {
     var noteTextField: some View {
         LabeledMultipleTextField(
             title: "注釈",
-            text: $note,
+            text: $notes,
             lineLimit: 5,
             focusState: $focus,
             focusCase: .notes
