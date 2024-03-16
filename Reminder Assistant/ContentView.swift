@@ -113,7 +113,7 @@ struct ContentView: View {
 
     var noteTextField: some View {
         LabeledMultipleTextField(
-            title: "注釈",
+            title: "備考",
             text: $notes,
             lineLimit: 5,
             focusState: $focus,
