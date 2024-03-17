@@ -12,6 +12,7 @@
 		4C19129E2B9F2F8C00D208F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C19129D2B9F2F8C00D208F5 /* Assets.xcassets */; };
 		4C1912A12B9F2F8C00D208F5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C1912A02B9F2F8C00D208F5 /* Preview Assets.xcassets */; };
 		4C1912A92B9F310800D208F5 /* JapaneseDateConverter in Frameworks */ = {isa = PBXBuildFile; productRef = 4C1912A82B9F310800D208F5 /* JapaneseDateConverter */; };
+		4C9AA7652BA731F90036462A /* ReminderCreateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9AA7642BA731F90036462A /* ReminderCreateManager.swift */; };
 		4CD0A9582BA2E2B000CE5A2F /* FloatingAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0A9572BA2E2B000CE5A2F /* FloatingAlert.swift */; };
 		4CD0A95A2BA2E32800CE5A2F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0A9592BA2E32800CE5A2F /* SettingsView.swift */; };
 		4CFF20C02BA3FD6D0092EA08 /* LabeledTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFF20BF2BA3FD6D0092EA08 /* LabeledTextField.swift */; };
@@ -24,6 +25,8 @@
 		4C19129B2B9F2F8B00D208F5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4C19129D2B9F2F8C00D208F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C1912A02B9F2F8C00D208F5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		4C9AA7632BA730FA0036462A /* Reminder-Assistant-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Reminder-Assistant-Info.plist"; sourceTree = SOURCE_ROOT; };
+		4C9AA7642BA731F90036462A /* ReminderCreateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCreateManager.swift; sourceTree = "<group>"; };
 		4CD0A9572BA2E2B000CE5A2F /* FloatingAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingAlert.swift; sourceTree = "<group>"; };
 		4CD0A9592BA2E32800CE5A2F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		4CFF20BF2BA3FD6D0092EA08 /* LabeledTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledTextField.swift; sourceTree = "<group>"; };
@@ -61,12 +64,14 @@
 		4C1912982B9F2F8B00D208F5 /* Reminder Assistant */ = {
 			isa = PBXGroup;
 			children = (
+				4C9AA7632BA730FA0036462A /* Reminder-Assistant-Info.plist */,
 				4C1912992B9F2F8B00D208F5 /* Reminder_AssistantApp.swift */,
 				4C19129B2B9F2F8B00D208F5 /* ContentView.swift */,
 				4CFF20BF2BA3FD6D0092EA08 /* LabeledTextField.swift */,
 				4CFF20C52BA402220092EA08 /* LabeledMultipleTextField.swift */,
 				4CD0A9572BA2E2B000CE5A2F /* FloatingAlert.swift */,
 				4CD0A9592BA2E32800CE5A2F /* SettingsView.swift */,
+				4C9AA7642BA731F90036462A /* ReminderCreateManager.swift */,
 				4C19129D2B9F2F8C00D208F5 /* Assets.xcassets */,
 				4C19129F2B9F2F8C00D208F5 /* Preview Content */,
 			);
@@ -157,6 +162,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C9AA7652BA731F90036462A /* ReminderCreateManager.swift in Sources */,
 				4C19129C2B9F2F8B00D208F5 /* ContentView.swift in Sources */,
 				4CD0A95A2BA2E32800CE5A2F /* SettingsView.swift in Sources */,
 				4C19129A2B9F2F8B00D208F5 /* Reminder_AssistantApp.swift in Sources */,
@@ -299,6 +305,7 @@
 				DEVELOPMENT_TEAM = QJC45QJ28B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Reminder-Assistant-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -329,6 +336,7 @@
 				DEVELOPMENT_TEAM = QJC45QJ28B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Reminder-Assistant-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
