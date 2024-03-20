@@ -1,10 +1,24 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var autoFocus = true
-    @State private var selectedList = "デフォルトリスト"
-    private let lists: [String] = ["デフォルトリスト", "リストA", "リストB", "リストC"]
+    @AppStorage("autoFocus") private var autoFocus = false
+    @AppStorage("destinationListID") private var destinationListID = ""
+    private let lists: [(name: String, id: String)]?
     @Environment(\.dismiss) private var dismiss
+
+    private let defaultList: String?
+    private let reminderCreateManager = ReminderCreateManager()
+
+    init() {
+        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+            self.defaultList = "リストC"
+            self.lists = [("リストA", "list-a"), ("リストB", "list-b"), ("リストC", "list-c"), ("リストD", "list-d"), ("リストE", "list-e"),
+            ]
+        } else {
+            self.defaultList = try? reminderCreateManager.getDefaultList().title
+            self.lists = try? reminderCreateManager.getExistingLists().map { ($0.title, $0.calendarIdentifier) }
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -23,17 +37,38 @@ struct SettingsView: View {
     }
 
     var reminderSection: some View {
-        Section {
-            Picker("作成先", selection: $selectedList) {
-                ForEach(lists, id: \.self) { list in
-                    Text(list)
-                        .tag(list)
-                }
+        {
+            if let lists, lists.contains(where: { $0.id == destinationListID }) == false {
+                print(lists)
+                print("destinationListID:", destinationListID)
+                destinationListID.removeAll()
             }
-        } header: {
-            Text("リマインダー")
-        } footer: {
-            Text("未設定の場合はデフォルトに設定されているリストに作成します。")
+        }()
+        return if let defaultList, let lists {
+            AnyView(
+                Section {
+                    Picker("作成先", selection: $destinationListID) {
+                        Text("デフォルトリスト")
+                            .tag("")
+                        ForEach(lists, id: \.id) { list in
+                            Text(list.name)
+                                .tag(list.id)
+                        }
+                    }
+                } header: {
+                    Text("リマインダー")
+                } footer: {
+                    Text("現在のデフォルトリストは\(Text(defaultList).bold())に設定されています。")
+                }
+            )
+        } else {
+            AnyView(
+                Section {
+                    Text("予期せぬエラーが発生しました。")
+                } header: {
+                    Text("リマインダー")
+                }
+            )
         }
     }
 

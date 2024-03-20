@@ -44,6 +44,12 @@ class ReminderCreateManager {
         return eventStore.calendars(for: .reminder)
     }
 
+    func getDefaultList() throws -> EKCalendar {
+        guard let defaultList = eventStore.defaultCalendarForNewReminders()
+        else { throw ReminderCreateManagerError.getDefaultListFailed }
+        return defaultList
+    }
+
     private func canAccessReminderApp() -> Bool {
         let status = EKEventStore.authorizationStatus(for: .reminder)
         return status == .fullAccess ? true : false
@@ -62,5 +68,6 @@ extension ReminderCreateManager {
         case authorizationStatusIsNotFullAccess
         case createFailed
         case specifiedListIsNotFound
+        case getDefaultListFailed
     }
 }
