@@ -11,6 +11,7 @@ struct ContentView: View {
     @AppStorage("destinationListID") private var destinationListID = ""
     private let reminderCreateManager = ReminderCreateManager()
     private let japaneseDateConverter = JapaneseDateConverter()
+    @Environment(\.scenePhase) private var scenePhase
 
     @State private var isShowSettingView = false
 
@@ -67,6 +68,10 @@ struct ContentView: View {
         .sheet(isPresented: $isShowSettingView) {
             SettingsView()
                 .presentationDetents([.medium])
+        }
+        .onChange(of: scenePhase) { _, newValue in
+            guard newValue != .active else { return }
+            isShowSettingView = false
         }
     }
 
