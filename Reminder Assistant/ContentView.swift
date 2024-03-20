@@ -12,6 +12,8 @@ struct ContentView: View {
     private let reminderCreateManager = ReminderCreateManager()
     private let japaneseDateConverter = JapaneseDateConverter()
 
+    @State private var isShowSettingView = false
+
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
@@ -36,8 +38,10 @@ struct ContentView: View {
         .background(backgroundColor)
         .safeAreaInset(edge: .bottom) {
             if focus == nil {
-                Button("Show App Settings") {}
-                    .foregroundColor(.secondary)
+                Button("Show App Settings") {
+                    isShowSettingView = true
+                }
+                .foregroundColor(.secondary)
             }
         }
         .overlay {
@@ -59,6 +63,9 @@ struct ContentView: View {
             } catch {
                 print(error)
             }
+        }
+        .sheet(isPresented: $isShowSettingView) {
+            SettingsView()
         }
     }
 
