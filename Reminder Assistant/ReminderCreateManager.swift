@@ -16,7 +16,7 @@ class ReminderCreateManager {
         title: String,
         deadline: Date,
         notes: String? = nil,
-        calendarIdentifier: String? = nil
+        calendarIdentifier: String
     ) throws {
         guard canAccessReminderApp()
         else { throw ReminderCreateManagerError.authorizationStatusIsNotFullAccess }
@@ -25,11 +25,14 @@ class ReminderCreateManager {
         reminder.notes = notes
         reminder.dueDateComponents = Calendar.autoupdatingCurrent.dateComponents(in: .init(identifier: "Asia/Tokyo")!, from: deadline)
         reminder.addAlarm(EKAlarm(absoluteDate: deadline))
-        if let calendarIdentifier {
-            guard isExistingList(calendarIdentifier)
-            else { throw ReminderCreateManagerError.specifiedListIsNotFound }
+        if calendarIdentifier.isEmpty {
+            guard let defaultList = eventStore.defaultCalendarForNewReminders()
+            else { throw ReminderCreateManagerError.getDefaultListFailed }
+            reminder.calendar = defaultList
         } else {
-            reminder.calendar = eventStore.defaultCalendarForNewReminders()
+            guard let destinationList = find(id: calendarIdentifier)
+            else { throw ReminderCreateManagerError.specifiedListIsNotFound }
+            reminder.calendar = destinationList
         }
         do {
             try eventStore.save(reminder, commit: true)
