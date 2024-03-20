@@ -2,8 +2,8 @@ import SwiftUI
 
 struct SettingsView: View {
     @AppStorage("autoFocus") private var autoFocus = false
-    @State private var selectedList = "デフォルトリスト"
-    private let lists: [String] = ["デフォルトリスト", "リストA", "リストB", "リストC"]
+    @AppStorage("selectedList") private var selectedList = ""
+    private let lists: [String] = ["リストA", "リストB", "リストC"]
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
