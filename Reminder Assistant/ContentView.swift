@@ -12,7 +12,7 @@ struct ContentView: View {
     private let reminderCreateManager = ReminderCreateManager()
     private let japaneseDateConverter = JapaneseDateConverter()
     @Environment(\.scenePhase) private var scenePhase
-
+    @AppStorage("autoFocus") private var autoFocus = false
     @State private var isShowSettingView = false
 
     var body: some View {
@@ -72,6 +72,11 @@ struct ContentView: View {
         .onChange(of: scenePhase) { _, newValue in
             guard newValue != .active else { return }
             isShowSettingView = false
+            floatingAlertInformation = nil
+        }
+        .onChange(of: scenePhase) { _, newValue in
+            guard newValue == .active else { return }
+            if autoFocus == true { focus = .title }
         }
     }
 
