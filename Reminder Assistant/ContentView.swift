@@ -66,6 +66,7 @@ struct ContentView: View {
         }
         .sheet(isPresented: $isShowSettingView) {
             SettingsView()
+                .presentationDetents([.medium])
         }
     }
 
