@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @AppStorage("autoFocus") private var autoFocus = false
-    @AppStorage("selectedList") private var selectedList = ""
+    @AppStorage("destinationListID") private var destinationListID = ""
     private let lists: [String] = ["リストA", "リストB", "リストC"]
     @Environment(\.dismiss) private var dismiss
 
@@ -24,7 +24,7 @@ struct SettingsView: View {
 
     var reminderSection: some View {
         Section {
-            Picker("作成先", selection: $selectedList) {
+            Picker("作成先", selection: $destinationListID) {
                 ForEach(lists, id: \.self) { list in
                     Text(list)
                         .tag(list)
