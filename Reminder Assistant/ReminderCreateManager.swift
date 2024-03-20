@@ -45,7 +45,8 @@ class ReminderCreateManager {
     }
 
     func getDefaultList() throws -> EKCalendar {
-        guard let defaultList = eventStore.defaultCalendarForNewReminders()
+        guard canAccessReminderApp(),
+              let defaultList = eventStore.defaultCalendarForNewReminders()
         else { throw ReminderCreateManagerError.getDefaultListFailed }
         return defaultList
     }
@@ -57,6 +58,10 @@ class ReminderCreateManager {
 
     private func isExistingList(_ calendarIdentifier: String) -> Bool {
         eventStore.calendars(for: .reminder).contains { $0.calendarIdentifier == calendarIdentifier }
+    }
+
+    private func find(id: String) -> EKCalendar? {
+        eventStore.calendars(for: .reminder).first(where: { $0.calendarIdentifier == id })
     }
 }
 
