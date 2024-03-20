@@ -72,6 +72,7 @@ struct ContentView: View {
         .onChange(of: scenePhase) { _, newValue in
             guard newValue != .active else { return }
             isShowSettingView = false
+            floatingAlertInformation = nil
         }
     }
 
