@@ -216,6 +216,16 @@ struct ContentView: View {
                         imageColor: .yellow
                     )
                 }
+            case .getDefaultListFailed:
+                withAnimation(.easeOut(duration: 0.25)) {
+                    floatingAlertInformation = .init(
+                        title: "Error!!",
+                        description: "デフォルトリストの取得に失敗しました。",
+                        descriptionAlignment: .center,
+                        imageName: "exclamationmark.triangle.fill",
+                        imageColor: .yellow
+                    )
+                }
             }
         } catch {
             withAnimation(.easeOut(duration: 0.25)) {
