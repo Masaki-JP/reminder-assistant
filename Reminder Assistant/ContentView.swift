@@ -5,7 +5,7 @@ struct ContentView: View {
     @State private var title = ""
     @State private var deadline = ""
     @State private var notes = ""
-    @FocusState private var focus: Focus?
+    @FocusState private var focus: FocusedTextField?
     @State private var floatingAlertInformation: FloatingAlert.Information?
     @Environment(\.colorScheme) private var colorScheme
     @AppStorage("destinationListID") private var destinationListID = ""
@@ -46,17 +46,11 @@ struct ContentView: View {
             }
         }
         .overlay {
-            if let info = floatingAlertInformation {
-                Color(colorScheme == .light ? .gray : .black).opacity(0.5)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        didTapFloatingAlertBackgroundAction()
-                    }
-                FloatingAlert(info)
-                    .frame(maxHeight: .infinity)
-                    .ignoresSafeArea()
-                    .transition(.move(edge: .bottom))
-            }
+            floatingAlert
+        }
+        .sheet(isPresented: $isShowSettingView) {
+            SettingsView()
+                .presentationDetents([.medium])
         }
         .task {
             do {
@@ -64,10 +58,6 @@ struct ContentView: View {
             } catch {
                 print(error)
             }
-        }
-        .sheet(isPresented: $isShowSettingView) {
-            SettingsView()
-                .presentationDetents([.medium])
         }
         .onChange(of: scenePhase) { _, newValue in
             guard newValue != .active else { return }
@@ -80,9 +70,11 @@ struct ContentView: View {
         }
     }
 
-    enum Focus {
+    enum FocusedTextField {
         case title, deadline, notes
     }
+
+    private enum JapaneseDateConverterError: Error { case failed }
 
     var foregroundColor: Color {
         colorScheme == .light ? .init(red: 64/255, green: 123/255, blue: 255/255) : .init(red: 64/255, green: 123/255, blue: 255/255)
@@ -130,7 +122,7 @@ struct ContentView: View {
             focusCase: .deadline,
             returnKeyType: .done,
             dismissKeyboardAfterCompletion: true,
-            onReturnAction: reminderCreateAction
+            onReturnAction: createReminder
         )
         .foregroundStyle(foregroundColor)
     }
@@ -148,7 +140,7 @@ struct ContentView: View {
 
     var reminderCreateButton: some View {
         Button {
-            reminderCreateAction()
+            createReminder()
         } label: {
             Text("リマインダー作成")
                 .font(.title3)
@@ -161,8 +153,22 @@ struct ContentView: View {
         .tint(foregroundColor)
     }
 
-    func reminderCreateAction() {
-        enum JapaneseDateConverterError: Error { case failed }
+    @ViewBuilder
+    var floatingAlert: some View {
+        if let info = floatingAlertInformation {
+            Color(colorScheme == .light ? .gray : .black).opacity(0.5)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    didTapFloatingAlertBackgroundAction()
+                }
+            FloatingAlert(info)
+                .frame(maxHeight: .infinity)
+                .ignoresSafeArea()
+                .transition(.move(edge: .bottom))
+        }
+    }
+
+    func createReminder() {
         do {
             focus = nil
             guard let deadlineDate = japaneseDateConverter.convert(from: deadline)
@@ -178,69 +184,61 @@ struct ContentView: View {
                 )
             }
             title.removeAll(); deadline.removeAll(); notes.removeAll();
-        } catch is JapaneseDateConverterError {
+        } catch {
             withAnimation(.easeOut(duration: 0.25)) {
-                floatingAlertInformation = .init(
-                    title: "Error!!",
-                    description: "リマインダーの作成に失敗しました。期限の記述をご確認ください。",
-                    descriptionAlignment: .leading,
-                    imageName: "exclamationmark.triangle.fill",
-                    imageColor: .yellow
-                )
+                handleError(error)
             }
-        } catch let error as ReminderCreateManagerError {
+        }
+    }
+
+    private let onUnexpectedErrorOccurredFloatingAlertInfomation = FloatingAlert.Information(
+        title: "Error!!",
+        description: "実行中に予期せぬエラーが発生しました。",
+        descriptionAlignment: .leading,
+        imageName: "exclamationmark.triangle.fill",
+        imageColor: .yellow
+    )
+
+    func handleError(_ error: Error) {
+        floatingAlertInformation = if let error = error as? JapaneseDateConverterError {
+            .init(
+                title: "Error!!",
+                description: "リマインダーの作成に失敗しました。期限の記述をご確認ください。",
+                descriptionAlignment: .leading,
+                imageName: "exclamationmark.triangle.fill",
+                imageColor: .yellow
+            )
+        } else if let error = error as? ReminderCreateManagerError {
             switch error {
             case .authorizationStatusIsNotFullAccess:
-                withAnimation(.easeOut(duration: 0.25)) {
-                    floatingAlertInformation = .init(
+                    .init(
                         title: "Error!!",
                         description: "リマインダーアプリへのアクセスが許可されていません。",
-                        descriptionAlignment: .center,
+                        descriptionAlignment: .leading,
                         imageName: "exclamationmark.triangle.fill",
                         imageColor: .yellow
                     )
-                }
             case .specifiedListIsNotFound:
-                withAnimation(.easeOut(duration: 0.25)) {
-                    floatingAlertInformation = .init(
+                    .init(
                         title: "Error!!",
                         description: "リマインダーの作成先に設定されているリストが見つかりませんでした。設定画面から再度設定してください。",
                         descriptionAlignment: .leading,
                         imageName: "exclamationmark.triangle.fill",
                         imageColor: .yellow
                     )
-                }
             case .getDefaultListFailed:
-                withAnimation(.easeOut(duration: 0.25)) {
-                    floatingAlertInformation = .init(
+                    .init(
                         title: "Error!!",
                         description: "デフォルトリストの取得に失敗しました。",
-                        descriptionAlignment: .center,
+                        descriptionAlignment: .leading,
                         imageName: "exclamationmark.triangle.fill",
                         imageColor: .yellow
                     )
-                }
             case .requestFullAccessFailed, .createFailed, .multipleListsWithSameIDFound:
-                withAnimation(.easeOut(duration: 0.25)) {
-                    floatingAlertInformation = .init(
-                        title: "Error!!",
-                        description: "予期せぬエラーが発生しました。",
-                        descriptionAlignment: .center,
-                        imageName: "exclamationmark.triangle.fill",
-                        imageColor: .yellow
-                    )
-                }
+                onUnexpectedErrorOccurredFloatingAlertInfomation
             }
-        } catch {
-            withAnimation(.easeOut(duration: 0.25)) {
-                floatingAlertInformation = .init(
-                    title: "Error!!",
-                    description: "予期せぬエラーが発生しました。",
-                    descriptionAlignment: .center,
-                    imageName: "exclamationmark.triangle.fill",
-                    imageColor: .yellow
-                )
-            }
+        } else {
+            onUnexpectedErrorOccurredFloatingAlertInfomation
         }
     }
 

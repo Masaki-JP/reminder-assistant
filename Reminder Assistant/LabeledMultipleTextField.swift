@@ -5,8 +5,8 @@ struct LabeledMultipleTextField: View {
     let title: String
     let text: Binding<String>
     let lineLimit: Int
-    let focusState: FocusState<ContentView.Focus?>.Binding
-    let focusCase: ContentView.Focus
+    let focusState: FocusState<ContentView.FocusedTextField?>.Binding
+    let focusCase: ContentView.FocusedTextField
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -31,7 +31,7 @@ private let labeledMultipleTextFieldSample = LabeledMultipleTextField(
     title: "期限",
     text: Binding.constant("明日の夜"),
     lineLimit: 5,
-    focusState: FocusState<ContentView.Focus?>().projectedValue,
+    focusState: FocusState<ContentView.FocusedTextField?>().projectedValue,
     focusCase: .title
 )
 
