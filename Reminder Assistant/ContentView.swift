@@ -200,7 +200,7 @@ struct ContentView: View {
     )
 
     func handleError(_ error: Error) {
-        floatingAlertInformation = if let error = error as? JapaneseDateConverterError {
+        floatingAlertInformation = if error is JapaneseDateConverterError {
             .init(
                 title: "Error!!",
                 description: "リマインダーの作成に失敗しました。期限の記述をご確認ください。",
