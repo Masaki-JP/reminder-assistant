@@ -167,12 +167,7 @@ struct ContentView: View {
             focus = nil
             guard let deadlineDate = japaneseDateConverter.convert(from: deadline)
             else { throw JapaneseDateConverterError.failed }
-            try reminderCreateManager.create(
-                title: title,
-                deadline: deadlineDate,
-                notes: notes.isEmpty ? nil : notes,
-                calendarIdentifier: destinationListID
-            )
+            try reminderCreateManager.create(title: title, deadline: deadlineDate, notes: notes, destinationListID: destinationListID )
             withAnimation(.easeOut(duration: 0.25)) {
                 floatingAlertInformation = .init(
                     title: "Success!!",
@@ -182,6 +177,7 @@ struct ContentView: View {
                     imageColor: foregroundColor
                 )
             }
+            title.removeAll(); deadline.removeAll(); notes.removeAll();
         } catch is JapaneseDateConverterError {
             withAnimation(.easeOut(duration: 0.25)) {
                 floatingAlertInformation = .init(
@@ -194,31 +190,11 @@ struct ContentView: View {
             }
         } catch let error as ReminderCreateManagerError {
             switch error {
-            case .requestFullAccessFailed:
-                withAnimation(.easeOut(duration: 0.25)) {
-                    floatingAlertInformation = .init(
-                        title: "Error!!",
-                        description: "予期せぬエラーが発生しました。",
-                        descriptionAlignment: .center,
-                        imageName: "exclamationmark.triangle.fill",
-                        imageColor: .yellow
-                    )
-                }
             case .authorizationStatusIsNotFullAccess:
                 withAnimation(.easeOut(duration: 0.25)) {
                     floatingAlertInformation = .init(
                         title: "Error!!",
                         description: "リマインダーアプリへのアクセスが許可されていません。",
-                        descriptionAlignment: .center,
-                        imageName: "exclamationmark.triangle.fill",
-                        imageColor: .yellow
-                    )
-                }
-            case .createFailed:
-                withAnimation(.easeOut(duration: 0.25)) {
-                    floatingAlertInformation = .init(
-                        title: "Error!!",
-                        description: "予期せぬエラーが発生しました。",
                         descriptionAlignment: .center,
                         imageName: "exclamationmark.triangle.fill",
                         imageColor: .yellow
@@ -244,6 +220,16 @@ struct ContentView: View {
                         imageColor: .yellow
                     )
                 }
+            case .requestFullAccessFailed, .createFailed, .multipleListsWithSameIDFound:
+                withAnimation(.easeOut(duration: 0.25)) {
+                    floatingAlertInformation = .init(
+                        title: "Error!!",
+                        description: "予期せぬエラーが発生しました。",
+                        descriptionAlignment: .center,
+                        imageName: "exclamationmark.triangle.fill",
+                        imageColor: .yellow
+                    )
+                }
             }
         } catch {
             withAnimation(.easeOut(duration: 0.25)) {
@@ -259,9 +245,6 @@ struct ContentView: View {
     }
 
     func didTapFloatingAlertBackgroundAction() {
-        title.removeAll()
-        deadline.removeAll()
-        notes.removeAll()
         withAnimation(.easeIn(duration: 0.25)) {
             floatingAlertInformation = nil
         }

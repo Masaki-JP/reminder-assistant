@@ -1,22 +1,20 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @AppStorage("autoFocus") private var autoFocus = false
-    @AppStorage("destinationListID") private var destinationListID = ""
-    private let lists: [(name: String, id: String)]?
-    @Environment(\.dismiss) private var dismiss
-
-    private let defaultList: String?
     private let reminderCreateManager = ReminderCreateManager()
+    private let defaultList: String?
+    private let lists: [ReminderList]?
+    @AppStorage("destinationListID") private var destinationListID = ""
+    @AppStorage("autoFocus") private var autoFocus = false
+    @Environment(\.dismiss) private var dismiss
 
     init() {
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
-            self.defaultList = "リストC"
-            self.lists = [("リストA", "list-a"), ("リストB", "list-b"), ("リストC", "list-c"), ("リストD", "list-d"), ("リストE", "list-e"),
-            ]
+            self.defaultList = "リストB"
+            self.lists = [.init("リストA", "a"), .init("リストB", "b"), .init("リストC", "c")]
         } else {
             self.defaultList = try? reminderCreateManager.getDefaultList().title
-            self.lists = try? reminderCreateManager.getExistingLists().map { ($0.title, $0.calendarIdentifier) }
+            self.lists = try? reminderCreateManager.getExistingLists().map { .init($0.title, $0.calendarIdentifier) }
         }
     }
 
@@ -36,39 +34,34 @@ struct SettingsView: View {
         }
     }
 
+    @ViewBuilder
     var reminderSection: some View {
-        {
-            if let lists, lists.contains(where: { $0.id == destinationListID }) == false {
-                print(lists)
-                print("destinationListID:", destinationListID)
-                destinationListID.removeAll()
-            }
-        }()
-        return if let defaultList, let lists {
-            AnyView(
-                Section {
-                    Picker("作成先", selection: $destinationListID) {
-                        Text("デフォルトリスト")
-                            .tag("")
-                        ForEach(lists, id: \.id) { list in
-                            Text(list.name)
-                                .tag(list.id)
-                        }
+        if let defaultList, let lists {
+            Section {
+                Picker("作成先", selection: $destinationListID) {
+                    Text("デフォルトリスト")
+                        .tag("")
+                    ForEach(lists, id: \.id) { list in
+                        Text(list.name)
+                            .tag(list.id)
                     }
-                } header: {
-                    Text("リマインダー")
-                } footer: {
-                    Text("現在のデフォルトリストは\(Text(defaultList).bold())に設定されています。")
                 }
-            )
+            } header: {
+                Text("リマインダー")
+            } footer: {
+                Text("現在のデフォルトリストは\(Text(defaultList).bold())に設定されています。")
+            }
+            .onAppear {
+                if lists.contains(where: { $0.id == destinationListID }) == false {
+                    destinationListID.removeAll()
+                }
+            }
         } else {
-            AnyView(
-                Section {
-                    Text("予期せぬエラーが発生しました。")
-                } header: {
-                    Text("リマインダー")
-                }
-            )
+            Section {
+                Text("予期せぬエラーが発生しました。")
+            } header: {
+                Text("リマインダー")
+            }
         }
     }
 
@@ -80,6 +73,14 @@ struct SettingsView: View {
         } footer: {
             Text("リマインダーの作成画面が表示されたときに、入力フォームに自動でフォーカスします。")
         }
+    }
+}
+
+private struct ReminderList {
+    let name, id: String
+    init(_ name: String, _ id: String) {
+        self.name = name
+        self.id = id
     }
 }
 

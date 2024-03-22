@@ -1,7 +1,7 @@
 import Foundation
 import EventKit
 
-class ReminderCreateManager {
+struct ReminderCreateManager {
     private let eventStore = EKEventStore()
 
     func requestFullAccessToReminders() async throws {
@@ -12,28 +12,25 @@ class ReminderCreateManager {
         }
     }
 
-    func create(
-        title: String,
-        deadline: Date,
-        notes: String? = nil,
-        calendarIdentifier: String
-    ) throws {
+    func create(title: String, deadline: Date, notes: String, destinationListID: String) throws {
         guard canAccessReminderApp()
         else { throw ReminderCreateManagerError.authorizationStatusIsNotFullAccess }
+
         let reminder = EKReminder(eventStore: eventStore)
         reminder.title = title
         reminder.notes = notes
         reminder.dueDateComponents = Calendar.autoupdatingCurrent.dateComponents(in: .init(identifier: "Asia/Tokyo")!, from: deadline)
         reminder.addAlarm(EKAlarm(absoluteDate: deadline))
-        if calendarIdentifier.isEmpty {
+
+        if destinationListID.isEmpty {
             guard let defaultList = eventStore.defaultCalendarForNewReminders()
             else { throw ReminderCreateManagerError.getDefaultListFailed }
             reminder.calendar = defaultList
         } else {
-            guard let destinationList = find(id: calendarIdentifier)
-            else { throw ReminderCreateManagerError.specifiedListIsNotFound }
+            let destinationList = try find(id: destinationListID)
             reminder.calendar = destinationList
         }
+
         do {
             try eventStore.save(reminder, commit: true)
         } catch {
@@ -59,12 +56,15 @@ class ReminderCreateManager {
         return status == .fullAccess ? true : false
     }
 
-    private func isExistingList(_ calendarIdentifier: String) -> Bool {
-        eventStore.calendars(for: .reminder).contains { $0.calendarIdentifier == calendarIdentifier }
-    }
-
-    private func find(id: String) -> EKCalendar? {
-        eventStore.calendars(for: .reminder).first(where: { $0.calendarIdentifier == id })
+    private func find(id: String) throws -> EKCalendar {
+        let lists = eventStore.calendars(for: .reminder)
+        if lists.filter({ $0.calendarIdentifier == id }).count == 0 {
+            throw ReminderCreateManagerError.specifiedListIsNotFound
+        } else if lists.filter({ $0.calendarIdentifier == id }).count == 1 {
+            return lists.first!
+        } else {
+            throw ReminderCreateManagerError.multipleListsWithSameIDFound
+        }
     }
 }
 
@@ -77,5 +77,6 @@ extension ReminderCreateManager {
         case createFailed
         case specifiedListIsNotFound
         case getDefaultListFailed
+        case multipleListsWithSameIDFound
     }
 }
