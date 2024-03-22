@@ -1,7 +1,7 @@
 import Foundation
 import EventKit
 
-class ReminderCreateManager {
+struct ReminderCreateManager {
     private let eventStore = EKEventStore()
 
     func requestFullAccessToReminders() async throws {
