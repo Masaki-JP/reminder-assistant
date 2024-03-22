@@ -1,19 +1,17 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @AppStorage("autoFocus") private var autoFocus = false
-    @AppStorage("destinationListID") private var destinationListID = ""
-    private let lists: [ReminderList]?
-    @Environment(\.dismiss) private var dismiss
-
-    private let defaultList: String?
     private let reminderCreateManager = ReminderCreateManager()
+    private let defaultList: String?
+    private let lists: [ReminderList]?
+    @AppStorage("destinationListID") private var destinationListID = ""
+    @AppStorage("autoFocus") private var autoFocus = false
+    @Environment(\.dismiss) private var dismiss
 
     init() {
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
-            self.defaultList = "リストC"
-            self.lists = [.init("リストA", "list-a"), .init("リストB", "list-b"), .init("リストC", "list-c"), .init("リストD", "list-d"), .init("リストE", "list-e"),
-            ]
+            self.defaultList = "リストB"
+            self.lists = [.init("リストA", "a"), .init("リストB", "b"), .init("リストC", "c")]
         } else {
             self.defaultList = try? reminderCreateManager.getDefaultList().title
             self.lists = try? reminderCreateManager.getExistingLists().map { .init($0.title, $0.calendarIdentifier) }
