@@ -190,31 +190,11 @@ struct ContentView: View {
             }
         } catch let error as ReminderCreateManagerError {
             switch error {
-            case .requestFullAccessFailed:
-                withAnimation(.easeOut(duration: 0.25)) {
-                    floatingAlertInformation = .init(
-                        title: "Error!!",
-                        description: "予期せぬエラーが発生しました。",
-                        descriptionAlignment: .center,
-                        imageName: "exclamationmark.triangle.fill",
-                        imageColor: .yellow
-                    )
-                }
             case .authorizationStatusIsNotFullAccess:
                 withAnimation(.easeOut(duration: 0.25)) {
                     floatingAlertInformation = .init(
                         title: "Error!!",
                         description: "リマインダーアプリへのアクセスが許可されていません。",
-                        descriptionAlignment: .center,
-                        imageName: "exclamationmark.triangle.fill",
-                        imageColor: .yellow
-                    )
-                }
-            case .createFailed:
-                withAnimation(.easeOut(duration: 0.25)) {
-                    floatingAlertInformation = .init(
-                        title: "Error!!",
-                        description: "予期せぬエラーが発生しました。",
                         descriptionAlignment: .center,
                         imageName: "exclamationmark.triangle.fill",
                         imageColor: .yellow
@@ -240,7 +220,7 @@ struct ContentView: View {
                         imageColor: .yellow
                     )
                 }
-            case .multipleListsWithSameIDFound:
+            case .requestFullAccessFailed, .createFailed, .multipleListsWithSameIDFound:
                 withAnimation(.easeOut(duration: 0.25)) {
                     floatingAlertInformation = .init(
                         title: "Error!!",
