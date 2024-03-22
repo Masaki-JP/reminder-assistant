@@ -182,6 +182,7 @@ struct ContentView: View {
                     imageColor: foregroundColor
                 )
             }
+            title.removeAll(); deadline.removeAll(); notes.removeAll();
         } catch is JapaneseDateConverterError {
             withAnimation(.easeOut(duration: 0.25)) {
                 floatingAlertInformation = .init(
@@ -259,9 +260,6 @@ struct ContentView: View {
     }
 
     func didTapFloatingAlertBackgroundAction() {
-        title.removeAll()
-        deadline.removeAll()
-        notes.removeAll()
         withAnimation(.easeIn(duration: 0.25)) {
             floatingAlertInformation = nil
         }
