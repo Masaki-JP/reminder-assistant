@@ -5,7 +5,7 @@ struct ContentView: View {
     @State private var title = ""
     @State private var deadline = ""
     @State private var notes = ""
-    @FocusState private var focus: Focus?
+    @FocusState private var focus: FocusedTextField?
     @State private var floatingAlertInformation: FloatingAlert.Information?
     @Environment(\.colorScheme) private var colorScheme
     @AppStorage("destinationListID") private var destinationListID = ""
@@ -70,7 +70,7 @@ struct ContentView: View {
         }
     }
 
-    enum Focus {
+    enum FocusedTextField {
         case title, deadline, notes
     }
 

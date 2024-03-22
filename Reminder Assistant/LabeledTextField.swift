@@ -3,8 +3,8 @@ import SwiftUI
 struct LabeledTextField: View {
     let title: String
     let text: Binding<String>
-    let focusState: FocusState<ContentView.Focus?>.Binding
-    let focusCase: ContentView.Focus
+    let focusState: FocusState<ContentView.FocusedTextField?>.Binding
+    let focusCase: ContentView.FocusedTextField
     let returnKeyType: UIReturnKeyType
     let dismissKeyboardAfterCompletion: Bool
     let onReturnAction: @MainActor () -> Void
@@ -34,8 +34,8 @@ struct LabeledTextField: View {
 
 private struct RepresentedUITextFieldWrapper: View {
     let text: Binding<String>
-    let focusState: FocusState<ContentView.Focus?>.Binding
-    let focusCase: ContentView.Focus
+    let focusState: FocusState<ContentView.FocusedTextField?>.Binding
+    let focusCase: ContentView.FocusedTextField
     let returnKeyType: UIReturnKeyType
     let dismissKeyboardAfterCompletion: Bool
     let onReturnAction: @MainActor () -> Void
@@ -114,7 +114,7 @@ private struct RepresentedUITextField: UIViewRepresentable {
 private let labeledTextFieldSample = LabeledTextField(
     title: "期限",
     text: Binding.constant("明日の夜"),
-    focusState: FocusState<ContentView.Focus?>().projectedValue,
+    focusState: FocusState<ContentView.FocusedTextField?>().projectedValue,
     focusCase: .title,
     returnKeyType: .default,
     dismissKeyboardAfterCompletion: false,
