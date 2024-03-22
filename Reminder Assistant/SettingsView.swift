@@ -3,7 +3,7 @@ import SwiftUI
 struct SettingsView: View {
     @AppStorage("autoFocus") private var autoFocus = false
     @AppStorage("destinationListID") private var destinationListID = ""
-    private let lists: [(name: String, id: String)]?
+    private let lists: [ReminderList]?
     @Environment(\.dismiss) private var dismiss
 
     private let defaultList: String?
@@ -12,11 +12,11 @@ struct SettingsView: View {
     init() {
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
             self.defaultList = "リストC"
-            self.lists = [("リストA", "list-a"), ("リストB", "list-b"), ("リストC", "list-c"), ("リストD", "list-d"), ("リストE", "list-e"),
+            self.lists = [.init("リストA", "list-a"), .init("リストB", "list-b"), .init("リストC", "list-c"), .init("リストD", "list-d"), .init("リストE", "list-e"),
             ]
         } else {
             self.defaultList = try? reminderCreateManager.getDefaultList().title
-            self.lists = try? reminderCreateManager.getExistingLists().map { ($0.title, $0.calendarIdentifier) }
+            self.lists = try? reminderCreateManager.getExistingLists().map { .init($0.title, $0.calendarIdentifier) }
         }
     }
 
@@ -75,6 +75,14 @@ struct SettingsView: View {
         } footer: {
             Text("リマインダーの作成画面が表示されたときに、入力フォームに自動でフォーカスします。")
         }
+    }
+}
+
+private struct ReminderList {
+    let name, id: String
+    init(_ name: String, _ id: String) {
+        self.name = name
+        self.id = id
     }
 }
 
