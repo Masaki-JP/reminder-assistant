@@ -167,14 +167,14 @@ struct ContentView: View {
                 .transition(.move(edge: .bottom))
         }
     }
-
+    
     func createReminder() {
-        do {
-            focus = nil
-            guard let deadlineDate = japaneseDateConverter.convert(from: deadline)
-            else { throw JapaneseDateConverterError.failed }
-            try reminderCreateManager.create(title: title, deadline: deadlineDate, notes: notes, destinationListID: destinationListID )
-            withAnimation(.easeOut(duration: 0.25)) {
+        withAnimation(.easeOut(duration: 0.25)) {
+            do {
+                focus = nil
+                guard let deadlineDate = japaneseDateConverter.convert(from: deadline)
+                else { throw JapaneseDateConverterError.failed }
+                try reminderCreateManager.create(title: title, deadline: deadlineDate, notes: notes, destinationListID: destinationListID )
                 floatingAlertInformation = .init(
                     title: "Success!!",
                     description: "\(title)\n(\(deadlineDate))",
@@ -182,10 +182,8 @@ struct ContentView: View {
                     imageName: "hand.thumbsup.fill",
                     imageColor: foregroundColor
                 )
-            }
-            title.removeAll(); deadline.removeAll(); notes.removeAll();
-        } catch {
-            withAnimation(.easeOut(duration: 0.25)) {
+                title.removeAll(); deadline.removeAll(); notes.removeAll();
+            } catch {
                 handleError(error)
             }
         }
