@@ -12,12 +12,7 @@ struct ReminderCreateManager {
         }
     }
 
-    func create(
-        title: String,
-        deadline: Date,
-        notes: String? = nil,
-        destinationListID: String
-    ) throws {
+    func create(title: String, deadline: Date, notes: String, destinationListID: String) throws {
         guard canAccessReminderApp()
         else { throw ReminderCreateManagerError.authorizationStatusIsNotFullAccess }
         let reminder = EKReminder(eventStore: eventStore)

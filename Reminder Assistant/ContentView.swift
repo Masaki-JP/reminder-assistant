@@ -167,12 +167,7 @@ struct ContentView: View {
             focus = nil
             guard let deadlineDate = japaneseDateConverter.convert(from: deadline)
             else { throw JapaneseDateConverterError.failed }
-            try reminderCreateManager.create(
-                title: title,
-                deadline: deadlineDate,
-                notes: notes.isEmpty ? nil : notes,
-                destinationListID: destinationListID
-            )
+            try reminderCreateManager.create(title: title, deadline: deadlineDate, notes: notes, destinationListID: destinationListID )
             withAnimation(.easeOut(duration: 0.25)) {
                 floatingAlertInformation = .init(
                     title: "Success!!",
