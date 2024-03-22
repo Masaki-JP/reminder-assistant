@@ -36,39 +36,34 @@ struct SettingsView: View {
         }
     }
 
+    @ViewBuilder
     var reminderSection: some View {
-        {
-            if let lists, lists.contains(where: { $0.id == destinationListID }) == false {
-                print(lists)
-                print("destinationListID:", destinationListID)
-                destinationListID.removeAll()
-            }
-        }()
-        return if let defaultList, let lists {
-            AnyView(
-                Section {
-                    Picker("作成先", selection: $destinationListID) {
-                        Text("デフォルトリスト")
-                            .tag("")
-                        ForEach(lists, id: \.id) { list in
-                            Text(list.name)
-                                .tag(list.id)
-                        }
+        if let defaultList, let lists {
+            Section {
+                Picker("作成先", selection: $destinationListID) {
+                    Text("デフォルトリスト")
+                        .tag("")
+                    ForEach(lists, id: \.id) { list in
+                        Text(list.name)
+                            .tag(list.id)
                     }
-                } header: {
-                    Text("リマインダー")
-                } footer: {
-                    Text("現在のデフォルトリストは\(Text(defaultList).bold())に設定されています。")
                 }
-            )
+            } header: {
+                Text("リマインダー")
+            } footer: {
+                Text("現在のデフォルトリストは\(Text(defaultList).bold())に設定されています。")
+            }
+            .onAppear {
+                if lists.contains(where: { $0.id == destinationListID }) == false {
+                    destinationListID.removeAll()
+                }
+            }
         } else {
-            AnyView(
-                Section {
-                    Text("予期せぬエラーが発生しました。")
-                } header: {
-                    Text("リマインダー")
-                }
-            )
+            Section {
+                Text("予期せぬエラーが発生しました。")
+            } header: {
+                Text("リマインダー")
+            }
         }
     }
 
