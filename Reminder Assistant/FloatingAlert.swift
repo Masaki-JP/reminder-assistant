@@ -64,6 +64,7 @@ struct FloatingAlert: View {
 
     var descriptionText: some View {
         Text(description)
+            .font(.callout)
             .multilineTextAlignment(descriptionAlignment)
     }
 
