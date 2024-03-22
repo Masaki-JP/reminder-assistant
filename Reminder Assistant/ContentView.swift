@@ -168,6 +168,15 @@ struct ContentView: View {
 
     func createReminder() {
         enum JapaneseDateConverterError: Error { case failed }
+
+        let onUnexpectedErrorOccurredFloatingAlertInfomation = FloatingAlert.Information(
+            title: "Error!!",
+            description: "実行中に予期せぬエラーが発生しました。",
+            descriptionAlignment: .leading,
+            imageName: "exclamationmark.triangle.fill",
+            imageColor: .yellow
+        )
+
         do {
             focus = nil
             guard let deadlineDate = japaneseDateConverter.convert(from: deadline)
@@ -194,57 +203,39 @@ struct ContentView: View {
                 )
             }
         } catch let error as ReminderCreateManagerError {
-            switch error {
-            case .authorizationStatusIsNotFullAccess:
-                withAnimation(.easeOut(duration: 0.25)) {
-                    floatingAlertInformation = .init(
-                        title: "Error!!",
-                        description: "リマインダーアプリへのアクセスが許可されていません。",
-                        descriptionAlignment: .leading,
-                        imageName: "exclamationmark.triangle.fill",
-                        imageColor: .yellow
-                    )
-                }
-            case .specifiedListIsNotFound:
-                withAnimation(.easeOut(duration: 0.25)) {
-                    floatingAlertInformation = .init(
-                        title: "Error!!",
-                        description: "リマインダーの作成先に設定されているリストが見つかりませんでした。設定画面から再度設定してください。",
-                        descriptionAlignment: .leading,
-                        imageName: "exclamationmark.triangle.fill",
-                        imageColor: .yellow
-                    )
-                }
-            case .getDefaultListFailed:
-                withAnimation(.easeOut(duration: 0.25)) {
-                    floatingAlertInformation = .init(
-                        title: "Error!!",
-                        description: "デフォルトリストの取得に失敗しました。",
-                        descriptionAlignment: .leading,
-                        imageName: "exclamationmark.triangle.fill",
-                        imageColor: .yellow
-                    )
-                }
-            case .requestFullAccessFailed, .createFailed, .multipleListsWithSameIDFound:
-                withAnimation(.easeOut(duration: 0.25)) {
-                    floatingAlertInformation = .init(
-                        title: "Error!!",
-                        description: "実行中に予期せぬエラーが発生しました。",
-                        descriptionAlignment: .leading,
-                        imageName: "exclamationmark.triangle.fill",
-                        imageColor: .yellow
-                    )
+            withAnimation(.easeOut(duration: 0.25)) {
+                floatingAlertInformation = switch error {
+                case .authorizationStatusIsNotFullAccess:
+                        .init(
+                            title: "Error!!",
+                            description: "リマインダーアプリへのアクセスが許可されていません。",
+                            descriptionAlignment: .leading,
+                            imageName: "exclamationmark.triangle.fill",
+                            imageColor: .yellow
+                        )
+                case .specifiedListIsNotFound:
+                        .init(
+                            title: "Error!!",
+                            description: "リマインダーの作成先に設定されているリストが見つかりませんでした。設定画面から再度設定してください。",
+                            descriptionAlignment: .leading,
+                            imageName: "exclamationmark.triangle.fill",
+                            imageColor: .yellow
+                        )
+                case .getDefaultListFailed:
+                        .init(
+                            title: "Error!!",
+                            description: "デフォルトリストの取得に失敗しました。",
+                            descriptionAlignment: .leading,
+                            imageName: "exclamationmark.triangle.fill",
+                            imageColor: .yellow
+                        )
+                case .requestFullAccessFailed, .createFailed, .multipleListsWithSameIDFound:
+                        onUnexpectedErrorOccurredFloatingAlertInfomation
                 }
             }
         } catch {
             withAnimation(.easeOut(duration: 0.25)) {
-                floatingAlertInformation = .init(
-                    title: "Error!!",
-                    description: "実行中に予期せぬエラーが発生しました。",
-                    descriptionAlignment: .leading,
-                    imageName: "exclamationmark.triangle.fill",
-                    imageColor: .yellow
-                )
+                floatingAlertInformation = onUnexpectedErrorOccurredFloatingAlertInfomation
             }
         }
     }
