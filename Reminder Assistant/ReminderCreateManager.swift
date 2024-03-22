@@ -68,5 +68,6 @@ extension ReminderCreateManager {
         case createFailed
         case specifiedListIsNotFound
         case getDefaultListFailed
+        case multipleListsWithSameIDFound
     }
 }

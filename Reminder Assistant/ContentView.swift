@@ -240,6 +240,16 @@ struct ContentView: View {
                         imageColor: .yellow
                     )
                 }
+            case .multipleListsWithSameIDFound:
+                withAnimation(.easeOut(duration: 0.25)) {
+                    floatingAlertInformation = .init(
+                        title: "Error!!",
+                        description: "予期せぬエラーが発生しました。",
+                        descriptionAlignment: .center,
+                        imageName: "exclamationmark.triangle.fill",
+                        imageColor: .yellow
+                    )
+                }
             }
         } catch {
             withAnimation(.easeOut(duration: 0.25)) {
