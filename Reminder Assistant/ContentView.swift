@@ -58,16 +58,16 @@ struct ContentView: View {
                     .transition(.move(edge: .bottom))
             }
         }
+        .sheet(isPresented: $isShowSettingView) {
+            SettingsView()
+                .presentationDetents([.medium])
+        }
         .task {
             do {
                 try await reminderCreateManager.requestFullAccessToReminders()
             } catch {
                 print(error)
             }
-        }
-        .sheet(isPresented: $isShowSettingView) {
-            SettingsView()
-                .presentationDetents([.medium])
         }
         .onChange(of: scenePhase) { _, newValue in
             guard newValue != .active else { return }
