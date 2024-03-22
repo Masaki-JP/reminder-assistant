@@ -94,7 +94,48 @@ private let floatingAlertSample = FloatingAlert(
         imageName: "hand.thumbsup.fill",
         imageColor: .blue
     )
+
+//    .init(
+//        title: "Error!!",
+//        description: "リマインダーの作成に失敗しました。期限の記述をご確認ください。",
+//        descriptionAlignment: .leading,
+//        imageName: "exclamationmark.triangle.fill",
+//        imageColor: .yellow
+//    )
+
+//    .init(
+//        title: "Error!!",
+//        description: "リマインダーアプリへのアクセスが許可されていません。",
+//        descriptionAlignment: .leading,
+//        imageName: "exclamationmark.triangle.fill",
+//        imageColor: .yellow
+//    )
+
+//    .init(
+//        title: "Error!!",
+//        description: "リマインダーの作成先に設定されているリストが見つかりませんでした。設定画面から再度設定してください。",
+//        descriptionAlignment: .leading,
+//        imageName: "exclamationmark.triangle.fill",
+//        imageColor: .yellow
+//    )
+
+//    .init(
+//        title: "Error!!",
+//        description: "デフォルトリストの取得に失敗しました。",
+//        descriptionAlignment: .leading,
+//        imageName: "exclamationmark.triangle.fill",
+//        imageColor: .yellow
+//    )
+
+//    .init(
+//        title: "Error!!",
+//        description: "実行中に予期せぬエラーが発生しました。",
+//        descriptionAlignment: .leading,
+//        imageName: "exclamationmark.triangle.fill",
+//        imageColor: .yellow
+//    )
 )
+
 
 #Preview("Light") {
     floatingAlertSample
