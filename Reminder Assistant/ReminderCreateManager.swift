@@ -15,20 +15,22 @@ struct ReminderCreateManager {
     func create(title: String, deadline: Date, notes: String, destinationListID: String) throws {
         guard canAccessReminderApp()
         else { throw ReminderCreateManagerError.authorizationStatusIsNotFullAccess }
+
         let reminder = EKReminder(eventStore: eventStore)
         reminder.title = title
         reminder.notes = notes
         reminder.dueDateComponents = Calendar.autoupdatingCurrent.dateComponents(in: .init(identifier: "Asia/Tokyo")!, from: deadline)
         reminder.addAlarm(EKAlarm(absoluteDate: deadline))
+
         if destinationListID.isEmpty {
             guard let defaultList = eventStore.defaultCalendarForNewReminders()
             else { throw ReminderCreateManagerError.getDefaultListFailed }
             reminder.calendar = defaultList
         } else {
-            guard let destinationList = find(id: destinationListID)
-            else { throw ReminderCreateManagerError.specifiedListIsNotFound }
+            let destinationList = try find(id: destinationListID)
             reminder.calendar = destinationList
         }
+
         do {
             try eventStore.save(reminder, commit: true)
         } catch {
@@ -54,8 +56,15 @@ struct ReminderCreateManager {
         return status == .fullAccess ? true : false
     }
 
-    private func find(id: String) -> EKCalendar? {
-        eventStore.calendars(for: .reminder).first(where: { $0.calendarIdentifier == id })
+    private func find(id: String) throws -> EKCalendar {
+        let lists = eventStore.calendars(for: .reminder)
+        if lists.filter({ $0.calendarIdentifier == id }).count == 0 {
+            throw ReminderCreateManagerError.specifiedListIsNotFound
+        } else if lists.filter({ $0.calendarIdentifier == id }).count == 1 {
+            return lists.first!
+        } else {
+            throw ReminderCreateManagerError.multipleListsWithSameIDFound
+        }
     }
 }
 
