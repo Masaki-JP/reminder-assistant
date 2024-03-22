@@ -200,7 +200,7 @@ struct ContentView: View {
                     floatingAlertInformation = .init(
                         title: "Error!!",
                         description: "リマインダーアプリへのアクセスが許可されていません。",
-                        descriptionAlignment: .center,
+                        descriptionAlignment: .leading,
                         imageName: "exclamationmark.triangle.fill",
                         imageColor: .yellow
                     )
@@ -220,7 +220,7 @@ struct ContentView: View {
                     floatingAlertInformation = .init(
                         title: "Error!!",
                         description: "デフォルトリストの取得に失敗しました。",
-                        descriptionAlignment: .center,
+                        descriptionAlignment: .leading,
                         imageName: "exclamationmark.triangle.fill",
                         imageColor: .yellow
                     )
@@ -229,8 +229,8 @@ struct ContentView: View {
                 withAnimation(.easeOut(duration: 0.25)) {
                     floatingAlertInformation = .init(
                         title: "Error!!",
-                        description: "予期せぬエラーが発生しました。",
-                        descriptionAlignment: .center,
+                        description: "実行中に予期せぬエラーが発生しました。",
+                        descriptionAlignment: .leading,
                         imageName: "exclamationmark.triangle.fill",
                         imageColor: .yellow
                     )
@@ -240,8 +240,8 @@ struct ContentView: View {
             withAnimation(.easeOut(duration: 0.25)) {
                 floatingAlertInformation = .init(
                     title: "Error!!",
-                    description: "予期せぬエラーが発生しました。",
-                    descriptionAlignment: .center,
+                    description: "実行中に予期せぬエラーが発生しました。",
+                    descriptionAlignment: .leading,
                     imageName: "exclamationmark.triangle.fill",
                     imageColor: .yellow
                 )
