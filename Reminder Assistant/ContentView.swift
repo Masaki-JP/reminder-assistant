@@ -130,7 +130,7 @@ struct ContentView: View {
             focusCase: .deadline,
             returnKeyType: .done,
             dismissKeyboardAfterCompletion: true,
-            onReturnAction: reminderCreateAction
+            onReturnAction: createReminder
         )
         .foregroundStyle(foregroundColor)
     }
@@ -148,7 +148,7 @@ struct ContentView: View {
 
     var reminderCreateButton: some View {
         Button {
-            reminderCreateAction()
+            createReminder()
         } label: {
             Text("リマインダー作成")
                 .font(.title3)
@@ -161,7 +161,7 @@ struct ContentView: View {
         .tint(foregroundColor)
     }
 
-    func reminderCreateAction() {
+    func createReminder() {
         enum JapaneseDateConverterError: Error { case failed }
         do {
             focus = nil
