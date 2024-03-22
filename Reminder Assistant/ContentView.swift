@@ -171,7 +171,7 @@ struct ContentView: View {
                 title: title,
                 deadline: deadlineDate,
                 notes: notes.isEmpty ? nil : notes,
-                calendarIdentifier: destinationListID
+                destinationListID: destinationListID
             )
             withAnimation(.easeOut(duration: 0.25)) {
                 floatingAlertInformation = .init(
