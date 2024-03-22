@@ -169,15 +169,6 @@ struct ContentView: View {
     }
 
     func createReminder() {
-
-        let onUnexpectedErrorOccurredFloatingAlertInfomation = FloatingAlert.Information(
-            title: "Error!!",
-            description: "実行中に予期せぬエラーが発生しました。",
-            descriptionAlignment: .leading,
-            imageName: "exclamationmark.triangle.fill",
-            imageColor: .yellow
-        )
-
         do {
             focus = nil
             guard let deadlineDate = japaneseDateConverter.convert(from: deadline)
@@ -193,51 +184,61 @@ struct ContentView: View {
                 )
             }
             title.removeAll(); deadline.removeAll(); notes.removeAll();
-        } catch is JapaneseDateConverterError {
-            withAnimation(.easeOut(duration: 0.25)) {
-                floatingAlertInformation = .init(
-                    title: "Error!!",
-                    description: "リマインダーの作成に失敗しました。期限の記述をご確認ください。",
-                    descriptionAlignment: .leading,
-                    imageName: "exclamationmark.triangle.fill",
-                    imageColor: .yellow
-                )
-            }
-        } catch let error as ReminderCreateManagerError {
-            withAnimation(.easeOut(duration: 0.25)) {
-                floatingAlertInformation = switch error {
-                case .authorizationStatusIsNotFullAccess:
-                        .init(
-                            title: "Error!!",
-                            description: "リマインダーアプリへのアクセスが許可されていません。",
-                            descriptionAlignment: .leading,
-                            imageName: "exclamationmark.triangle.fill",
-                            imageColor: .yellow
-                        )
-                case .specifiedListIsNotFound:
-                        .init(
-                            title: "Error!!",
-                            description: "リマインダーの作成先に設定されているリストが見つかりませんでした。設定画面から再度設定してください。",
-                            descriptionAlignment: .leading,
-                            imageName: "exclamationmark.triangle.fill",
-                            imageColor: .yellow
-                        )
-                case .getDefaultListFailed:
-                        .init(
-                            title: "Error!!",
-                            description: "デフォルトリストの取得に失敗しました。",
-                            descriptionAlignment: .leading,
-                            imageName: "exclamationmark.triangle.fill",
-                            imageColor: .yellow
-                        )
-                case .requestFullAccessFailed, .createFailed, .multipleListsWithSameIDFound:
-                        onUnexpectedErrorOccurredFloatingAlertInfomation
-                }
-            }
         } catch {
             withAnimation(.easeOut(duration: 0.25)) {
-                floatingAlertInformation = onUnexpectedErrorOccurredFloatingAlertInfomation
+                handleError(error)
             }
+        }
+    }
+
+    private let onUnexpectedErrorOccurredFloatingAlertInfomation = FloatingAlert.Information(
+        title: "Error!!",
+        description: "実行中に予期せぬエラーが発生しました。",
+        descriptionAlignment: .leading,
+        imageName: "exclamationmark.triangle.fill",
+        imageColor: .yellow
+    )
+
+    func handleError(_ error: Error) {
+        floatingAlertInformation = if let error = error as? JapaneseDateConverterError {
+            .init(
+                title: "Error!!",
+                description: "リマインダーの作成に失敗しました。期限の記述をご確認ください。",
+                descriptionAlignment: .leading,
+                imageName: "exclamationmark.triangle.fill",
+                imageColor: .yellow
+            )
+        } else if let error = error as? ReminderCreateManagerError {
+            switch error {
+            case .authorizationStatusIsNotFullAccess:
+                    .init(
+                        title: "Error!!",
+                        description: "リマインダーアプリへのアクセスが許可されていません。",
+                        descriptionAlignment: .leading,
+                        imageName: "exclamationmark.triangle.fill",
+                        imageColor: .yellow
+                    )
+            case .specifiedListIsNotFound:
+                    .init(
+                        title: "Error!!",
+                        description: "リマインダーの作成先に設定されているリストが見つかりませんでした。設定画面から再度設定してください。",
+                        descriptionAlignment: .leading,
+                        imageName: "exclamationmark.triangle.fill",
+                        imageColor: .yellow
+                    )
+            case .getDefaultListFailed:
+                    .init(
+                        title: "Error!!",
+                        description: "デフォルトリストの取得に失敗しました。",
+                        descriptionAlignment: .leading,
+                        imageName: "exclamationmark.triangle.fill",
+                        imageColor: .yellow
+                    )
+            case .requestFullAccessFailed, .createFailed, .multipleListsWithSameIDFound:
+                onUnexpectedErrorOccurredFloatingAlertInfomation
+            }
+        } else {
+            onUnexpectedErrorOccurredFloatingAlertInfomation
         }
     }
 
