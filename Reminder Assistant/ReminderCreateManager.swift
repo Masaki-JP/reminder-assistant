@@ -54,10 +54,6 @@ struct ReminderCreateManager {
         return status == .fullAccess ? true : false
     }
 
-    private func isExistingList(_ calendarIdentifier: String) -> Bool {
-        eventStore.calendars(for: .reminder).contains { $0.calendarIdentifier == calendarIdentifier }
-    }
-
     private func find(id: String) -> EKCalendar? {
         eventStore.calendars(for: .reminder).first(where: { $0.calendarIdentifier == id })
     }
