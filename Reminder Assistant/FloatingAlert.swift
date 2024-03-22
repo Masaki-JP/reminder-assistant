@@ -68,7 +68,6 @@ struct FloatingAlert: View {
             .multilineTextAlignment(descriptionAlignment)
     }
 
-    @ViewBuilder
     func borderdCircleImage(size: CGFloat) -> some View {
         Circle()
             .foregroundStyle(imageColor)
