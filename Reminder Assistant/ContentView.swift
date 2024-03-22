@@ -74,6 +74,8 @@ struct ContentView: View {
         case title, deadline, notes
     }
 
+    private enum JapaneseDateConverterError: Error { case failed }
+
     var foregroundColor: Color {
         colorScheme == .light ? .init(red: 64/255, green: 123/255, blue: 255/255) : .init(red: 64/255, green: 123/255, blue: 255/255)
     }
@@ -167,7 +169,6 @@ struct ContentView: View {
     }
 
     func createReminder() {
-        enum JapaneseDateConverterError: Error { case failed }
 
         let onUnexpectedErrorOccurredFloatingAlertInfomation = FloatingAlert.Information(
             title: "Error!!",
