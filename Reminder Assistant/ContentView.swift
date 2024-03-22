@@ -46,17 +46,7 @@ struct ContentView: View {
             }
         }
         .overlay {
-            if let info = floatingAlertInformation {
-                Color(colorScheme == .light ? .gray : .black).opacity(0.5)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        didTapFloatingAlertBackgroundAction()
-                    }
-                FloatingAlert(info)
-                    .frame(maxHeight: .infinity)
-                    .ignoresSafeArea()
-                    .transition(.move(edge: .bottom))
-            }
+            floatingAlert
         }
         .sheet(isPresented: $isShowSettingView) {
             SettingsView()
@@ -159,6 +149,21 @@ struct ContentView: View {
         }
         .buttonStyle(.borderedProminent)
         .tint(foregroundColor)
+    }
+
+    @ViewBuilder
+    var floatingAlert: some View {
+        if let info = floatingAlertInformation {
+            Color(colorScheme == .light ? .gray : .black).opacity(0.5)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    didTapFloatingAlertBackgroundAction()
+                }
+            FloatingAlert(info)
+                .frame(maxHeight: .infinity)
+                .ignoresSafeArea()
+                .transition(.move(edge: .bottom))
+        }
     }
 
     func createReminder() {
