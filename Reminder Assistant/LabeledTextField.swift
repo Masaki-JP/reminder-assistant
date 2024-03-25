@@ -91,7 +91,7 @@ private struct RepresentedUITextField: UIViewRepresentable {
     }
 
     class Coordinator: NSObject, UITextFieldDelegate {
-        var text: Binding<String>
+        let text: Binding<String>
         let dismissKeyboardAfterCompletion: Bool
         let onReturnAction: @MainActor () -> Void
 
