@@ -68,6 +68,13 @@ private struct RepresentedUITextField: UIViewRepresentable {
         textField.enablesReturnKeyAutomatically = true
         textField.delegate = context.coordinator
         textField.font = UIFont.preferredFont(forTextStyle: .body)
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+        toolbar.items = [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(title: "完了", style: .done, target: context.coordinator, action: #selector(Coordinator.dismissKeyboard))
+        ]
+        toolbar.sizeToFit()
+        textField.inputAccessoryView = toolbar
         return textField
     }
 
@@ -84,7 +91,7 @@ private struct RepresentedUITextField: UIViewRepresentable {
     }
 
     class Coordinator: NSObject, UITextFieldDelegate {
-        var text: Binding<String>
+        let text: Binding<String>
         let dismissKeyboardAfterCompletion: Bool
         let onReturnAction: @MainActor () -> Void
 
@@ -108,8 +115,19 @@ private struct RepresentedUITextField: UIViewRepresentable {
                 return false
             }
         }
+
+        func textFieldDidEndEditing(_ textField: UITextField) {
+            self.text.wrappedValue = textField.text ?? ""
+        }
     }
 }
+
+extension RepresentedUITextField.Coordinator {
+    @objc func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+
 
 private let labeledTextFieldSample = LabeledTextField(
     title: "期限",
