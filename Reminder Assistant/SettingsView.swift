@@ -34,8 +34,15 @@ struct SettingsView: View {
         }
     }
 
-    @ViewBuilder
     var reminderSection: some View {
+        if let lists, lists.contains(where: { $0.id == destinationListID }) == false {
+            destinationListID.removeAll()
+        }
+        return _reminderSection
+    }
+
+    @ViewBuilder
+    var _reminderSection: some View {
         if let defaultList, let lists {
             Section {
                 Picker("作成先", selection: $destinationListID) {
@@ -50,11 +57,6 @@ struct SettingsView: View {
                 Text("リマインダー")
             } footer: {
                 Text("現在のデフォルトリストは\(Text(defaultList).bold())に設定されています。")
-            }
-            .onAppear {
-                if lists.contains(where: { $0.id == destinationListID }) == false {
-                    destinationListID.removeAll()
-                }
             }
         } else {
             Section {
