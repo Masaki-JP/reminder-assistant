@@ -25,7 +25,22 @@ struct ContentView: View {
                     .padding()
                 titleTextField
                     .padding(.top, 3)
-                deadlineTextField
+                deadlineTextField     
+                    .toolbar {
+                        ToolbarItem(placement: .keyboard) {
+                            HStack(spacing: 0) {
+                                Spacer()
+                                Text("完了")
+                                    .bold()
+                                    .foregroundStyle(Color.accentColor)
+                                    .onTapGesture {
+                                        focus = nil
+                                    }
+
+                            }
+                            .padding(0)
+                        }
+                    }
                     .padding(.top, 25)
                 noteTextField
                     .padding(.top, 25)
