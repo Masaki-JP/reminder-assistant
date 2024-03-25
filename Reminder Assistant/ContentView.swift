@@ -71,6 +71,7 @@ struct ContentView: View {
             guard newValue == .active else { return }
             if autoFocus == true { focus = .title }
         }
+        .animation(.easeInOut, value: focus)
     }
     
     enum FocusedTextField {
