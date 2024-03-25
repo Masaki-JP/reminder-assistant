@@ -108,6 +108,10 @@ private struct RepresentedUITextField: UIViewRepresentable {
                 return false
             }
         }
+        
+        func textFieldDidEndEditing(_ textField: UITextField) {
+            self.text.wrappedValue = textField.text ?? ""
+        }
     }
 }
 
