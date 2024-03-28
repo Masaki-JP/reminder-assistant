@@ -113,7 +113,10 @@ struct ContentView: View {
             focusCase: .title,
             returnKeyType: .next,
             dismissKeyboardAfterCompletion: false,
-            onReturnAction: { focus = .deadline }
+            onReturnAction: { focus = .deadline },
+            myAction1: { print("called myAction1.") },
+            myAction2: { print("called myAction2.") },
+            myAction3: { print("called myAction3.") }
         )
         .foregroundStyle(foregroundColor)
     }
@@ -126,7 +129,10 @@ struct ContentView: View {
             focusCase: .deadline,
             returnKeyType: .done,
             dismissKeyboardAfterCompletion: true,
-            onReturnAction: createReminder
+            onReturnAction: createReminder,
+            myAction1: { print("called myAction1.") },
+            myAction2: { print("called myAction2.") },
+            myAction3: { print("called myAction3.") }
         )
         .foregroundStyle(foregroundColor)
     }
