@@ -8,9 +8,11 @@ struct LabeledTextField: View {
     let returnKeyType: UIReturnKeyType
     let dismissKeyboardAfterCompletion: Bool
     let onReturnAction: @MainActor () -> Void
-    let myAction1: @MainActor () -> Void
-    let myAction2: @MainActor () -> Void
-    let myAction3: @MainActor () -> Void
+    let toolbarButtonActions: (
+        title: @MainActor () -> Void,
+        deadline: @MainActor () -> Void,
+        notes: @MainActor ()-> Void
+    )
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -23,9 +25,11 @@ struct LabeledTextField: View {
                 returnKeyType: returnKeyType,
                 dismissKeyboardAfterCompletion: dismissKeyboardAfterCompletion,
                 onReturnAction: onReturnAction,
-                myAction1: myAction1,
-                myAction2: myAction2,
-                myAction3: myAction3
+                toolbarButtonActions: (
+                    title: toolbarButtonActions.title,
+                    deadline: toolbarButtonActions.deadline,
+                    notes: toolbarButtonActions.notes
+                )
             )
             .padding(.top, 3)
             Rectangle()
@@ -45,9 +49,11 @@ private struct RepresentedUITextFieldWrapper: View {
     let returnKeyType: UIReturnKeyType
     let dismissKeyboardAfterCompletion: Bool
     let onReturnAction: @MainActor () -> Void
-    let myAction1: @MainActor () -> Void
-    let myAction2: @MainActor () -> Void
-    let myAction3: @MainActor () -> Void
+    let toolbarButtonActions: (
+        title: @MainActor () -> Void,
+        deadline: @MainActor () -> Void,
+        notes: @MainActor ()-> Void
+    )
 
     var body: some View {
         TextField("", text: text)
@@ -59,9 +65,11 @@ private struct RepresentedUITextFieldWrapper: View {
                     returnKeyType: returnKeyType,
                     dismissKeyboardAfterCompletion: dismissKeyboardAfterCompletion,
                     onReturnAction: onReturnAction,
-                    myAction1: myAction1,
-                    myAction2: myAction2,
-                    myAction3: myAction3
+                    toolbarButtonActions: (
+                        title: toolbarButtonActions.title,
+                        deadline: toolbarButtonActions.deadline,
+                        notes: toolbarButtonActions.notes
+                    )
                 )
                 .focused(focusState, equals: focusCase)
             }
@@ -73,9 +81,11 @@ private struct RepresentedUITextField: UIViewRepresentable {
     let returnKeyType: UIReturnKeyType
     let dismissKeyboardAfterCompletion: Bool
     let onReturnAction: @MainActor () -> Void
-    let myAction1: @MainActor () -> Void
-    let myAction2: @MainActor () -> Void
-    let myAction3: @MainActor () -> Void
+    let toolbarButtonActions: (
+        title: @MainActor () -> Void,
+        deadline: @MainActor () -> Void,
+        notes: @MainActor ()-> Void
+    )
 
     func makeUIView(context: Context) -> UITextField {
         let textField = UITextField(frame: .zero)
@@ -87,11 +97,11 @@ private struct RepresentedUITextField: UIViewRepresentable {
         toolbar.items = [
             UIBarButtonItem(title: "↓", style: .done, target: context.coordinator, action: #selector(Coordinator.dismissKeyboard)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(customView: KeyboardToolbarButton(icon: UIImage(systemName: "list.bullet.clipboard"), title: "名前", action: myAction1)),
+            UIBarButtonItem(customView: KeyboardToolbarButton(icon: UIImage(systemName: "list.bullet.clipboard"), title: "名前", action: toolbarButtonActions.title)),
             UIBarButtonItem(title: "  -  ", style: .plain, target: nil, action: nil),
-            UIBarButtonItem(customView: KeyboardToolbarButton(icon: UIImage(systemName: "clock"), title: "期限", action: myAction2)),
+            UIBarButtonItem(customView: KeyboardToolbarButton(icon: UIImage(systemName: "clock"), title: "期限", action: toolbarButtonActions.deadline)),
             UIBarButtonItem(title: "  -  ", style: .plain, target: nil, action: nil),
-            UIBarButtonItem(customView: KeyboardToolbarButton(icon: UIImage(systemName: "note.text"), title: "備考", action: myAction3)),
+            UIBarButtonItem(customView: KeyboardToolbarButton(icon: UIImage(systemName: "note.text"), title: "備考", action: toolbarButtonActions.notes)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(title: "↓", style: .done, target: context.coordinator, action: #selector(Coordinator.dismissKeyboard))
         ]
@@ -109,9 +119,11 @@ private struct RepresentedUITextField: UIViewRepresentable {
             text: text,
             dismissKeyboardAfterCompletion: dismissKeyboardAfterCompletion,
             onReturnAction: onReturnAction,
-            myAction1: myAction1,
-            myAction2: myAction2,
-            myAction3: myAction3
+            toolbarButtonActions: (
+                title: toolbarButtonActions.title,
+                deadline: toolbarButtonActions.deadline,
+                notes: toolbarButtonActions.notes
+            )
         )
     }
 
@@ -119,24 +131,30 @@ private struct RepresentedUITextField: UIViewRepresentable {
         let text: Binding<String>
         let dismissKeyboardAfterCompletion: Bool
         let onReturnAction: @MainActor () -> Void
-        let myAction1: @MainActor () -> Void
-        let myAction2: @MainActor () -> Void
-        let myAction3: @MainActor () -> Void
+        let toolbarButtonActions: (
+            title: @MainActor () -> Void,
+            deadline: @MainActor () -> Void,
+            notes: @MainActor ()-> Void
+        )
 
         init(
             text: Binding<String>,
             dismissKeyboardAfterCompletion: Bool,
             onReturnAction: @escaping () -> Void,
-            myAction1: @escaping @MainActor () -> Void,
-            myAction2: @escaping @MainActor () -> Void,
-            myAction3: @escaping @MainActor () -> Void
+            toolbarButtonActions: (
+                title: @MainActor () -> Void,
+                deadline: @MainActor () -> Void,
+                notes: @MainActor ()-> Void
+            )
         ) {
             self.text = text
             self.dismissKeyboardAfterCompletion = dismissKeyboardAfterCompletion
             self.onReturnAction = onReturnAction
-            self.myAction1 = myAction1
-            self.myAction2 = myAction2
-            self.myAction3 = myAction3
+            self.toolbarButtonActions =  (
+                title: toolbarButtonActions.title,
+                deadline: toolbarButtonActions.deadline,
+                notes: toolbarButtonActions.notes
+            )
         }
 
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -160,32 +178,6 @@ private extension RepresentedUITextField.Coordinator {
     @objc func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
-}
-
-
-private let labeledTextFieldSample = LabeledTextField(
-    title: "期限",
-    text: Binding.constant("明日の夜"),
-    focusState: FocusState<ContentView.FocusedTextField?>().projectedValue,
-    focusCase: .title,
-    returnKeyType: .default,
-    dismissKeyboardAfterCompletion: false,
-    onReturnAction: { print("onReturnAction") },
-    myAction1: { print("myAction1") },
-    myAction2: { print("myAction2") },
-    myAction3: { print("myAction3") }
-)
-
-#Preview("Light") {
-    labeledTextFieldSample
-        .preferredColorScheme(.light)
-        .padding(.horizontal)
-}
-
-#Preview("Dark") {
-    labeledTextFieldSample
-        .preferredColorScheme(.dark)
-        .padding(.horizontal)
 }
 
 private class KeyboardToolbarButton: UIView {
@@ -231,4 +223,31 @@ private class KeyboardToolbarButton: UIView {
     @objc private func didTapButton() {
         action()
     }
+}
+
+private let labeledTextFieldSample = LabeledTextField(
+    title: "期限",
+    text: Binding.constant("明日の夜"),
+    focusState: FocusState<ContentView.FocusedTextField?>().projectedValue,
+    focusCase: .title,
+    returnKeyType: .default,
+    dismissKeyboardAfterCompletion: false,
+    onReturnAction: { print("onReturnAction") },
+    toolbarButtonActions: (
+        title: { print("toolbarButtonActions.title") },
+        deadline: { print("toolbarButtonActions.deadline") },
+        notes: { print("toolbarButtonActions.notes") }
+    )
+)
+
+#Preview("Light") {
+    labeledTextFieldSample
+        .preferredColorScheme(.light)
+        .padding(.horizontal)
+}
+
+#Preview("Dark") {
+    labeledTextFieldSample
+        .preferredColorScheme(.dark)
+        .padding(.horizontal)
 }

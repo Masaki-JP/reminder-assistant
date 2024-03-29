@@ -14,7 +14,7 @@ struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage("autoFocus") private var autoFocus = false
     @State private var isShowSettingView = false
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
@@ -25,7 +25,7 @@ struct ContentView: View {
                     .padding()
                 titleTextField
                     .padding(.top, 3)
-                deadlineTextField     
+                deadlineTextField
                     .toolbar {
                         completionButton
                     }
@@ -73,21 +73,21 @@ struct ContentView: View {
         }
         .animation(.easeInOut, value: focus)
     }
-    
+
     enum FocusedTextField {
         case title, deadline, notes
     }
-    
+
     private enum JapaneseDateConverterError: Error { case failed }
-    
+
     var foregroundColor: Color {
         colorScheme == .light ? .init(red: 64/255, green: 123/255, blue: 255/255) : .init(red: 64/255, green: 123/255, blue: 255/255)
     }
-    
+
     var backgroundColor: Color {
         colorScheme == .light ? .white : .init(red: 0.05, green: 0.05, blue: 0.15)
     }
-    
+
     var headerText: some View {
         ViewThatFits(in: .horizontal) {
             ForEach(0..<15) { i in
@@ -98,13 +98,13 @@ struct ContentView: View {
             }
         }
     }
-    
+
     var resizableImage: some View {
         Image("ApplicationUsers")
             .resizable()
             .scaledToFit()
     }
-    
+
     var titleTextField: some View {
         LabeledTextField(
             title: "名前",
@@ -114,13 +114,15 @@ struct ContentView: View {
             returnKeyType: .next,
             dismissKeyboardAfterCompletion: false,
             onReturnAction: { focus = .deadline },
-            myAction1: { print("called myAction1.") },
-            myAction2: { print("called myAction2.") },
-            myAction3: { print("called myAction3.") }
+            toolbarButtonActions: (
+                title: { focus = .title },
+                deadline: { focus = .deadline },
+                notes: { focus = .notes }
+            )
         )
         .foregroundStyle(foregroundColor)
     }
-    
+
     var deadlineTextField: some View {
         LabeledTextField(
             title: "期限",
@@ -130,13 +132,15 @@ struct ContentView: View {
             returnKeyType: .done,
             dismissKeyboardAfterCompletion: true,
             onReturnAction: createReminder,
-            myAction1: { print("called myAction1.") },
-            myAction2: { print("called myAction2.") },
-            myAction3: { print("called myAction3.") }
+            toolbarButtonActions: (
+                title: { focus = .title },
+                deadline: { focus = .deadline },
+                notes: { focus = .notes }
+            )
         )
         .foregroundStyle(foregroundColor)
     }
-    
+
     var noteTextField: some View {
         LabeledMultipleTextField(
             title: "備考",
@@ -147,7 +151,7 @@ struct ContentView: View {
         )
         .foregroundStyle(foregroundColor)
     }
-    
+
     var reminderCreateButton: some View {
         Button {
             createReminder()
@@ -162,7 +166,7 @@ struct ContentView: View {
         .buttonStyle(.borderedProminent)
         .tint(foregroundColor)
     }
-    
+
     @ViewBuilder
     var floatingAlert: some View {
         if let info = floatingAlertInformation {
@@ -177,7 +181,7 @@ struct ContentView: View {
                 .transition(.move(edge: .bottom))
         }
     }
-    
+
     @ToolbarContentBuilder
     var completionButton: some ToolbarContent {
         ToolbarItem(placement: .keyboard) {
@@ -189,12 +193,12 @@ struct ContentView: View {
                     .onTapGesture {
                         focus = nil
                     }
-                
+
             }
             .padding(0)
         }
     }
-    
+
     func createReminder() {
         withAnimation(.easeOut(duration: 0.25)) {
             do {
@@ -215,7 +219,7 @@ struct ContentView: View {
             }
         }
     }
-    
+
     private let onUnexpectedErrorOccurredFloatingAlertInfomation = FloatingAlert.Information(
         title: "Error!!",
         description: "実行中に予期せぬエラーが発生しました。",
@@ -223,7 +227,7 @@ struct ContentView: View {
         imageName: "exclamationmark.triangle.fill",
         imageColor: .yellow
     )
-    
+
     func handleError(_ error: Error) {
         floatingAlertInformation = if error is JapaneseDateConverterError {
             .init(
@@ -266,7 +270,7 @@ struct ContentView: View {
             onUnexpectedErrorOccurredFloatingAlertInfomation
         }
     }
-    
+
     func didTapFloatingAlertBackgroundAction() {
         withAnimation(.easeIn(duration: 0.25)) {
             floatingAlertInformation = nil
