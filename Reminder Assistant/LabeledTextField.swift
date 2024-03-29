@@ -202,3 +202,48 @@ private let labeledTextFieldSample = LabeledTextField(
         .preferredColorScheme(.dark)
         .padding(.horizontal)
 }
+
+private class KeyboardToolbarButton: UIView {
+    let iconImageView: UIImageView
+    let titleLabel: UILabel
+    let action: () -> Void
+
+    init(icon: UIImage?, title: String, action: @escaping () -> Void) {
+        self.iconImageView = UIImageView(image: icon)
+        self.titleLabel = UILabel()
+        self.action = action
+        super.init(frame: .zero)
+
+        setupView(icon: icon, title: title)
+    }
+
+    required init?(coder: NSCoder) { return nil }
+
+    private func setupView(icon: UIImage?, title: String) {
+        iconImageView.contentMode = .scaleAspectFit
+        titleLabel.text = title
+        titleLabel.font = UIFont.systemFont(ofSize: 16)
+        titleLabel.textColor = UIColor(.accentColor)
+
+        let stackView = UIStackView(arrangedSubviews: [iconImageView, titleLabel])
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        stackView.alignment = .center
+
+        addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ])
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapButton))
+        addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func didTapButton() {
+        action()
+    }
+}
