@@ -87,14 +87,11 @@ private struct RepresentedUITextField: UIViewRepresentable {
         toolbar.items = [
             UIBarButtonItem(title: "↓", style: .done, target: context.coordinator, action: #selector(Coordinator.dismissKeyboard)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: UIImage(systemName: "list.bullet.clipboard"), style: .plain, target: context.coordinator, action: #selector(Coordinator._myAction1)),
-            UIBarButtonItem(title: "名前", style: .plain, target: context.coordinator, action: #selector(Coordinator._myAction1)),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: UIImage(systemName: "clock"), style: .plain, target: context.coordinator, action: #selector(Coordinator._myAction2)),
-            UIBarButtonItem(title: "期限", style: .plain, target: context.coordinator, action: #selector(Coordinator._myAction2)),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: UIImage(systemName: "note.text"), style: .plain, target: context.coordinator, action: #selector(Coordinator._myAction3)),
-            UIBarButtonItem(title: "備考", style: .plain, target: context.coordinator, action: #selector(Coordinator._myAction3)),
+            UIBarButtonItem(customView: KeyboardToolbarButton(icon: UIImage(systemName: "list.bullet.clipboard"), title: "名前", action: myAction1)),
+            UIBarButtonItem(title: "  -  ", style: .plain, target: nil, action: nil),
+            UIBarButtonItem(customView: KeyboardToolbarButton(icon: UIImage(systemName: "clock"), title: "期限", action: myAction2)),
+            UIBarButtonItem(title: "  -  ", style: .plain, target: nil, action: nil),
+            UIBarButtonItem(customView: KeyboardToolbarButton(icon: UIImage(systemName: "note.text"), title: "備考", action: myAction3)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(title: "↓", style: .done, target: context.coordinator, action: #selector(Coordinator.dismissKeyboard))
         ]
@@ -162,18 +159,6 @@ private struct RepresentedUITextField: UIViewRepresentable {
 private extension RepresentedUITextField.Coordinator {
     @objc func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-
-    @objc func _myAction1() {
-        self.myAction1()
-    }
-
-    @objc func _myAction2() {
-        self.myAction2()
-    }
-
-    @objc func _myAction3() {
-        self.myAction3()
     }
 }
 
