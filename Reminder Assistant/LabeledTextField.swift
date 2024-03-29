@@ -25,11 +25,7 @@ struct LabeledTextField: View {
                 returnKeyType: returnKeyType,
                 dismissKeyboardAfterCompletion: dismissKeyboardAfterCompletion,
                 onReturnAction: onReturnAction,
-                toolbarButtonActions: (
-                    title: toolbarButtonActions.title,
-                    deadline: toolbarButtonActions.deadline,
-                    notes: toolbarButtonActions.notes
-                )
+                toolbarButtonActions: toolbarButtonActions
             )
             .padding(.top, 3)
             Rectangle()
@@ -65,11 +61,7 @@ private struct RepresentedUITextFieldWrapper: View {
                     returnKeyType: returnKeyType,
                     dismissKeyboardAfterCompletion: dismissKeyboardAfterCompletion,
                     onReturnAction: onReturnAction,
-                    toolbarButtonActions: (
-                        title: toolbarButtonActions.title,
-                        deadline: toolbarButtonActions.deadline,
-                        notes: toolbarButtonActions.notes
-                    )
+                    toolbarButtonActions: toolbarButtonActions
                 )
                 .focused(focusState, equals: focusCase)
             }
@@ -118,12 +110,7 @@ private struct RepresentedUITextField: UIViewRepresentable {
         Coordinator(
             text: text,
             dismissKeyboardAfterCompletion: dismissKeyboardAfterCompletion,
-            onReturnAction: onReturnAction,
-            toolbarButtonActions: (
-                title: toolbarButtonActions.title,
-                deadline: toolbarButtonActions.deadline,
-                notes: toolbarButtonActions.notes
-            )
+            onReturnAction: onReturnAction
         )
     }
 
@@ -131,30 +118,15 @@ private struct RepresentedUITextField: UIViewRepresentable {
         let text: Binding<String>
         let dismissKeyboardAfterCompletion: Bool
         let onReturnAction: @MainActor () -> Void
-        let toolbarButtonActions: (
-            title: @MainActor () -> Void,
-            deadline: @MainActor () -> Void,
-            notes: @MainActor ()-> Void
-        )
 
         init(
             text: Binding<String>,
             dismissKeyboardAfterCompletion: Bool,
-            onReturnAction: @escaping () -> Void,
-            toolbarButtonActions: (
-                title: @MainActor () -> Void,
-                deadline: @MainActor () -> Void,
-                notes: @MainActor ()-> Void
-            )
+            onReturnAction: @escaping () -> Void
         ) {
             self.text = text
             self.dismissKeyboardAfterCompletion = dismissKeyboardAfterCompletion
             self.onReturnAction = onReturnAction
-            self.toolbarButtonActions =  (
-                title: toolbarButtonActions.title,
-                deadline: toolbarButtonActions.deadline,
-                notes: toolbarButtonActions.notes
-            )
         }
 
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
