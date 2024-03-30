@@ -31,7 +31,6 @@ struct LabeledTextFieldWithUITextView: View {
             )
             .padding(.top, 3)
             Rectangle()
-                .frame(maxWidth: .infinity)
                 .frame(height: 1)
         }
         .onTapGesture {
