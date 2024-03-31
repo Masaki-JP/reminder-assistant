@@ -12,6 +12,7 @@
 		4C19129E2B9F2F8C00D208F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C19129D2B9F2F8C00D208F5 /* Assets.xcassets */; };
 		4C1912A12B9F2F8C00D208F5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C1912A02B9F2F8C00D208F5 /* Preview Assets.xcassets */; };
 		4C1912A92B9F310800D208F5 /* JapaneseDateConverter in Frameworks */ = {isa = PBXBuildFile; productRef = 4C1912A82B9F310800D208F5 /* JapaneseDateConverter */; };
+		4C8C85F42BB7C84000D494D6 /* LabeledTextFieldWithUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8C85F32BB7C84000D494D6 /* LabeledTextFieldWithUITextView.swift */; };
 		4C9AA7652BA731F90036462A /* ReminderCreateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9AA7642BA731F90036462A /* ReminderCreateManager.swift */; };
 		4CCD33852BAB7CAD00130E76 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CCD33842BAB7CAD00130E76 /* WidgetKit.framework */; };
 		4CCD33872BAB7CAD00130E76 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CCD33862BAB7CAD00130E76 /* SwiftUI.framework */; };
@@ -55,6 +56,7 @@
 		4C19129B2B9F2F8B00D208F5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4C19129D2B9F2F8C00D208F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C1912A02B9F2F8C00D208F5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		4C8C85F32BB7C84000D494D6 /* LabeledTextFieldWithUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledTextFieldWithUITextView.swift; sourceTree = "<group>"; };
 		4C9AA7632BA730FA0036462A /* Reminder-Assistant-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Reminder-Assistant-Info.plist"; sourceTree = SOURCE_ROOT; };
 		4C9AA7642BA731F90036462A /* ReminderCreateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCreateManager.swift; sourceTree = "<group>"; };
 		4CCD33822BAB7CAD00130E76 /* LaunchWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LaunchWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +118,7 @@
 				4C9AA7632BA730FA0036462A /* Reminder-Assistant-Info.plist */,
 				4C1912992B9F2F8B00D208F5 /* Reminder_AssistantApp.swift */,
 				4C19129B2B9F2F8B00D208F5 /* ContentView.swift */,
+				4C8C85F32BB7C84000D494D6 /* LabeledTextFieldWithUITextView.swift */,
 				4CFF20BF2BA3FD6D0092EA08 /* LabeledTextField.swift */,
 				4CFF20C52BA402220092EA08 /* LabeledMultipleTextField.swift */,
 				4CD0A9572BA2E2B000CE5A2F /* FloatingAlert.swift */,
@@ -267,6 +270,7 @@
 				4CD0A95A2BA2E32800CE5A2F /* SettingsView.swift in Sources */,
 				4C19129A2B9F2F8B00D208F5 /* Reminder_AssistantApp.swift in Sources */,
 				4CD0A9582BA2E2B000CE5A2F /* FloatingAlert.swift in Sources */,
+				4C8C85F42BB7C84000D494D6 /* LabeledTextFieldWithUITextView.swift in Sources */,
 				4CFF20C02BA3FD6D0092EA08 /* LabeledTextField.swift in Sources */,
 				4CFF20C62BA402220092EA08 /* LabeledMultipleTextField.swift in Sources */,
 			);
