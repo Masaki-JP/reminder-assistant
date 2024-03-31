@@ -87,6 +87,7 @@ private struct RepresentedUITextView: UIViewRepresentable {
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView(frame: .zero)
         textView.returnKeyType = returnKeyType
+        textView.backgroundColor = .clear
         textView.enablesReturnKeyAutomatically = true
         textView.delegate = context.coordinator
         textView.font = UIFont.preferredFont(forTextStyle: .body)
