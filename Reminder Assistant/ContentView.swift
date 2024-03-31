@@ -13,7 +13,7 @@ struct ContentView: View {
     private let japaneseDateConverter = JapaneseDateConverter()
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage("autoFocus") private var autoFocus = false
-    @State private var isShowSettingView = false
+    @State private var isShowSettingsView = false
 
     var body: some View {
         ScrollView {
@@ -40,7 +40,7 @@ struct ContentView: View {
         .safeAreaInset(edge: .bottom) {
             if focus == nil {
                 Button("Show App Settings") {
-                    isShowSettingView = true
+                    isShowSettingsView = true
                 }
                 .foregroundColor(.secondary)
             }
@@ -48,7 +48,7 @@ struct ContentView: View {
         .overlay {
             floatingAlert
         }
-        .sheet(isPresented: $isShowSettingView) {
+        .sheet(isPresented: $isShowSettingsView) {
             SettingsView()
                 .presentationDetents([.medium])
         }
@@ -61,7 +61,7 @@ struct ContentView: View {
         }
         .onChange(of: scenePhase) { _, newValue in
             guard newValue != .active else { return }
-            isShowSettingView = false
+            isShowSettingsView = false
             floatingAlertInformation = nil
         }
         .onChange(of: scenePhase) { _, newValue in
