@@ -26,9 +26,6 @@ struct ContentView: View {
                 titleTextField
                     .padding(.top, 3)
                 deadlineTextField
-                    .toolbar {
-                        completionButton
-                    }
                     .padding(.top, 25)
                 noteTextField
                     .padding(.top, 25)
@@ -106,9 +103,10 @@ struct ContentView: View {
     }
 
     var titleTextField: some View {
-        LabeledTextField(
+        LabeledTextFieldWithUITextView(
             title: "名前",
             text: $title,
+            lineLimit: 2,
             focusState: $focus,
             focusCase: .title,
             returnKeyType: .next,
@@ -124,14 +122,15 @@ struct ContentView: View {
     }
 
     var deadlineTextField: some View {
-        LabeledTextField(
+        LabeledTextFieldWithUITextView(
             title: "期限",
             text: $deadline,
+            lineLimit: 2,
             focusState: $focus,
             focusCase: .deadline,
             returnKeyType: .done,
             dismissKeyboardAfterCompletion: true,
-            onReturnAction: createReminder,
+            onReturnAction: { createReminder() },
             toolbarButtonActions: (
                 title: { focus = .title },
                 deadline: { focus = .deadline },
@@ -142,12 +141,20 @@ struct ContentView: View {
     }
 
     var noteTextField: some View {
-        LabeledMultipleTextField(
+        LabeledTextFieldWithUITextView(
             title: "備考",
             text: $notes,
             lineLimit: 5,
             focusState: $focus,
-            focusCase: .notes
+            focusCase: .notes,
+            returnKeyType: .default,
+            dismissKeyboardAfterCompletion: false,
+            onReturnAction: nil,
+            toolbarButtonActions: (
+                title: { focus = .title },
+                deadline: { focus = .deadline },
+                notes: { focus = .notes }
+            )
         )
         .foregroundStyle(foregroundColor)
     }
