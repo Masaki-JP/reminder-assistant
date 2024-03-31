@@ -13,7 +13,8 @@ struct ContentView: View {
     private let japaneseDateConverter = JapaneseDateConverter()
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage("autoFocus") private var autoFocus = false
-    @State private var isShowSettingView = false
+    @State private var isShowSettingsView = false
+    @State private var isShowAccessFailureAlert = false
 
     var body: some View {
         ScrollView {
@@ -40,7 +41,7 @@ struct ContentView: View {
         .safeAreaInset(edge: .bottom) {
             if focus == nil {
                 Button("Show App Settings") {
-                    isShowSettingView = true
+                    isShowSettingsView = true
                 }
                 .foregroundColor(.secondary)
             }
@@ -48,7 +49,7 @@ struct ContentView: View {
         .overlay {
             floatingAlert
         }
-        .sheet(isPresented: $isShowSettingView) {
+        .sheet(isPresented: $isShowSettingsView) {
             SettingsView()
                 .presentationDetents([.medium])
         }
@@ -61,7 +62,7 @@ struct ContentView: View {
         }
         .onChange(of: scenePhase) { _, newValue in
             guard newValue != .active else { return }
-            isShowSettingView = false
+            isShowSettingsView = false
             floatingAlertInformation = nil
         }
         .onChange(of: scenePhase) { _, newValue in
@@ -69,6 +70,13 @@ struct ContentView: View {
             if autoFocus == true { focus = .title }
         }
         .animation(.easeInOut, value: focus)
+        .alert("リマインダーへのアクセスが許可されていません。", isPresented: $isShowAccessFailureAlert) {
+            Button("設定を開く") {
+                guard let url = URL(string: UIApplication.openSettingsURLString),
+                      UIApplication.shared.canOpenURL(url) else { return }
+                UIApplication.shared.open(url)
+            }
+        }
     }
 
     enum FocusedTextField {
@@ -238,6 +246,10 @@ struct ContentView: View {
     )
 
     func handleError(_ error: Error) {
+        if case ReminderCreateManagerError.authorizationStatusIsNotFullAccess = error {
+            isShowAccessFailureAlert = true; return;
+        }
+
         floatingAlertInformation = if error is JapaneseDateConverterError {
             .init(
                 title: "Error!!",
@@ -248,14 +260,6 @@ struct ContentView: View {
             )
         } else if let error = error as? ReminderCreateManagerError {
             switch error {
-            case .authorizationStatusIsNotFullAccess:
-                    .init(
-                        title: "Error!!",
-                        description: "リマインダーアプリへのアクセスが許可されていません。",
-                        descriptionAlignment: .leading,
-                        imageName: "exclamationmark.triangle.fill",
-                        imageColor: .yellow
-                    )
             case .specifiedListIsNotFound:
                     .init(
                         title: "Error!!",
@@ -272,7 +276,7 @@ struct ContentView: View {
                         imageName: "exclamationmark.triangle.fill",
                         imageColor: .yellow
                     )
-            case .requestFullAccessFailed, .createFailed, .multipleListsWithSameIDFound:
+            case .authorizationStatusIsNotFullAccess, .requestFullAccessFailed, .createFailed, .multipleListsWithSameIDFound:
                 onUnexpectedErrorOccurredFloatingAlertInfomation
             }
         } else {

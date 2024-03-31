@@ -87,6 +87,7 @@ private struct RepresentedUITextView: UIViewRepresentable {
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView(frame: .zero)
         textView.returnKeyType = returnKeyType
+        textView.backgroundColor = .clear
         textView.enablesReturnKeyAutomatically = true
         textView.delegate = context.coordinator
         textView.font = UIFont.preferredFont(forTextStyle: .body)
@@ -143,14 +144,14 @@ private struct RepresentedUITextView: UIViewRepresentable {
         }
 
         func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-            self.text.wrappedValue = textView.text ?? "" // これ必要だっけ？
-            if text == "\n" { // リターンキーが押されたかをチェック
+            self.text.wrappedValue = textView.text ?? ""
+            if text == "\n" {
                 if let onReturnAction {
                     onReturnAction()
                     if dismissKeyboardAfterCompletion {
                         textView.resignFirstResponder()
                     }
-                    return false // リターンキーの入力をテキストビューに反映させない
+                    return false
                 } else {
                     return true
                 }
@@ -222,12 +223,12 @@ private class KeyboardToolbarButton: UIView {
 private let labeledTextFieldSample = LabeledTextFieldWithUITextView(
     title: "期限",
     text: Binding.constant("明日の夜"),
-    lineLimit: 1,
+    lineLimit: 2,
     focusState: FocusState<ContentView.FocusedTextField?>().projectedValue,
     focusCase: .title,
     returnKeyType: .default,
-    dismissKeyboardAfterCompletion: false,
-    onReturnAction: { print("onReturnAction") },
+    dismissKeyboardAfterCompletion: true,
+    onReturnAction: nil,
     toolbarButtonActions: (
         title: { print("toolbarButtonActions.title") },
         deadline: { print("toolbarButtonActions.deadline") },
