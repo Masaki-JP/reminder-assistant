@@ -8,7 +8,7 @@ struct LabeledTextFieldWithUITextView: View {
     let focusCase: ContentView.FocusedTextField
     let returnKeyType: UIReturnKeyType
     let dismissKeyboardAfterCompletion: Bool
-    let onReturnAction: @MainActor () -> Void
+    let onReturnAction: (@MainActor () -> Void)?
     let toolbarButtonActions: (
         title: @MainActor () -> Void,
         deadline: @MainActor () -> Void,
@@ -46,7 +46,7 @@ private struct RepresentedUITextViewWrapper: View {
     let focusCase: ContentView.FocusedTextField
     let returnKeyType: UIReturnKeyType
     let dismissKeyboardAfterCompletion: Bool
-    let onReturnAction: @MainActor () -> Void
+    let onReturnAction: (@MainActor () -> Void)?
     let toolbarButtonActions: (
         title: @MainActor () -> Void,
         deadline: @MainActor () -> Void,
@@ -77,7 +77,7 @@ private struct RepresentedUITextView: UIViewRepresentable {
     let lineLimit: Int
     let returnKeyType: UIReturnKeyType
     let dismissKeyboardAfterCompletion: Bool
-    let onReturnAction: @MainActor () -> Void
+    let onReturnAction: (@MainActor () -> Void)?
     let toolbarButtonActions: (
         title: @MainActor () -> Void,
         deadline: @MainActor () -> Void,
@@ -92,11 +92,6 @@ private struct RepresentedUITextView: UIViewRepresentable {
         textView.font = UIFont.preferredFont(forTextStyle: .body)
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
-//        textView.textContainer.lineBreakMode = .byTruncatingTail
-        if lineLimit == 1 {
-            textView.textContainer.maximumNumberOfLines = lineLimit
-            textView.isScrollEnabled = false
-        }
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
         toolbar.items = [
             UIBarButtonItem(title: "↓", style: .done, target: context.coordinator, action: #selector(Coordinator.dismissKeyboard)),
@@ -133,13 +128,13 @@ private struct RepresentedUITextView: UIViewRepresentable {
         let text: Binding<String>
         let lineLimit: Int
         let dismissKeyboardAfterCompletion: Bool
-        let onReturnAction: @MainActor () -> Void
+        let onReturnAction: (@MainActor () -> Void)?
 
         init(
             text: Binding<String>,
             lineLimit: Int,
             dismissKeyboardAfterCompletion: Bool,
-            onReturnAction: @escaping () -> Void
+            onReturnAction: (() -> Void)?
         ) {
             self.text = text
             self.lineLimit = lineLimit
@@ -150,14 +145,14 @@ private struct RepresentedUITextView: UIViewRepresentable {
         func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
             self.text.wrappedValue = textView.text ?? "" // これ必要だっけ？
             if text == "\n" { // リターンキーが押されたかをチェック
-                if lineLimit == 1 {
+                if let onReturnAction {
                     onReturnAction()
                     if dismissKeyboardAfterCompletion {
                         textView.resignFirstResponder()
                     }
                     return false // リターンキーの入力をテキストビューに反映させない
                 } else {
-                    return true // lineLimitが1より大きい場合は改行を許可する
+                    return true
                 }
             }
             return true
