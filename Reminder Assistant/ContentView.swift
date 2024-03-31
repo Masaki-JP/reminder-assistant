@@ -220,7 +220,9 @@ struct ContentView: View {
                     imageName: "hand.thumbsup.fill",
                     imageColor: foregroundColor
                 )
-                title.removeAll(); deadline.removeAll(); notes.removeAll();
+                Task { @MainActor in // Issue #26
+                    title.removeAll(); deadline.removeAll(); notes.removeAll();
+                }
             } catch {
                 handleError(error)
             }
