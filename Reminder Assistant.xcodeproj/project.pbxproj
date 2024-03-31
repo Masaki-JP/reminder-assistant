@@ -22,8 +22,6 @@
 		4CCD33922BAB7CAF00130E76 /* LaunchWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4CCD33822BAB7CAD00130E76 /* LaunchWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4CD0A9582BA2E2B000CE5A2F /* FloatingAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0A9572BA2E2B000CE5A2F /* FloatingAlert.swift */; };
 		4CD0A95A2BA2E32800CE5A2F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0A9592BA2E32800CE5A2F /* SettingsView.swift */; };
-		4CFF20C02BA3FD6D0092EA08 /* LabeledTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFF20BF2BA3FD6D0092EA08 /* LabeledTextField.swift */; };
-		4CFF20C62BA402220092EA08 /* LabeledMultipleTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFF20C52BA402220092EA08 /* LabeledMultipleTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,8 +66,6 @@
 		4CCD338F2BAB7CAF00130E76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4CD0A9572BA2E2B000CE5A2F /* FloatingAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingAlert.swift; sourceTree = "<group>"; };
 		4CD0A9592BA2E32800CE5A2F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		4CFF20BF2BA3FD6D0092EA08 /* LabeledTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledTextField.swift; sourceTree = "<group>"; };
-		4CFF20C52BA402220092EA08 /* LabeledMultipleTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledMultipleTextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,8 +115,6 @@
 				4C1912992B9F2F8B00D208F5 /* Reminder_AssistantApp.swift */,
 				4C19129B2B9F2F8B00D208F5 /* ContentView.swift */,
 				4C8C85F32BB7C84000D494D6 /* LabeledTextFieldWithUITextView.swift */,
-				4CFF20BF2BA3FD6D0092EA08 /* LabeledTextField.swift */,
-				4CFF20C52BA402220092EA08 /* LabeledMultipleTextField.swift */,
 				4CD0A9572BA2E2B000CE5A2F /* FloatingAlert.swift */,
 				4CD0A9592BA2E32800CE5A2F /* SettingsView.swift */,
 				4C9AA7642BA731F90036462A /* ReminderCreateManager.swift */,
@@ -271,8 +265,6 @@
 				4C19129A2B9F2F8B00D208F5 /* Reminder_AssistantApp.swift in Sources */,
 				4CD0A9582BA2E2B000CE5A2F /* FloatingAlert.swift in Sources */,
 				4C8C85F42BB7C84000D494D6 /* LabeledTextFieldWithUITextView.swift in Sources */,
-				4CFF20C02BA3FD6D0092EA08 /* LabeledTextField.swift in Sources */,
-				4CFF20C62BA402220092EA08 /* LabeledMultipleTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
