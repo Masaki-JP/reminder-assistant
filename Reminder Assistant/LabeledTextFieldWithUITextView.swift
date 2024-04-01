@@ -98,9 +98,9 @@ private struct RepresentedUITextView: UIViewRepresentable {
             UIBarButtonItem(title: "↓", style: .done, target: context.coordinator, action: #selector(Coordinator.dismissKeyboard)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(customView: KeyboardToolbarButton(icon: UIImage(systemName: "list.bullet.clipboard"), title: "名前", action: toolbarButtonActions.title)),
-            UIBarButtonItem(title: "  -  ", style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(customView: KeyboardToolbarButton(icon: UIImage(systemName: "clock"), title: "期限", action: toolbarButtonActions.deadline)),
-            UIBarButtonItem(title: "  -  ", style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),        
             UIBarButtonItem(customView: KeyboardToolbarButton(icon: UIImage(systemName: "note.text"), title: "備考", action: toolbarButtonActions.notes)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(title: "↓", style: .done, target: context.coordinator, action: #selector(Coordinator.dismissKeyboard))
