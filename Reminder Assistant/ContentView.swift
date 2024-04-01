@@ -17,23 +17,40 @@ struct ContentView: View {
     @State private var isShowAccessFailureAlert = false
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                headerText
-                    .padding(.top, 30)
-                resizableImage
-                    .frame(width: focus == nil ? 230 : 0, height: focus == nil ? 230 : 0)
-                    .padding()
-                titleTextField
-                    .padding(.top, 3)
-                deadlineTextField
-                    .padding(.top, 25)
-                noteTextField
-                    .padding(.top, 25)
-                reminderCreateButton
-                    .padding(.top, 25)
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: 0) {
+                    headerText
+                        .padding(.top, focus == nil ? 30 : 0)
+                    if focus == nil { Spacer() }
+                    if UIDevice.current.userInterfaceIdiom == .phone {
+                        resizableImage
+                            .frame(
+                                width: focus == nil ? 230 : 0,
+                                height: focus == nil ? 230 : 0
+                            )
+                    } else {
+                        resizableImage
+                            .frame(
+                                width: focus == nil ? 280 : 0,
+                                height: focus == nil ? 280 : 0
+                            )
+                    }
+                    if focus == nil { Spacer() }
+                    titleTextField
+                        .padding(.top, focus == nil ? 3 : 15)
+                    deadlineTextField
+                        .padding(.top, 25)
+                    noteTextField
+                        .padding(.top, 25)
+                    if focus == nil { Spacer() }
+                    reminderCreateButton
+                        .padding(.top, 25)
+                    if focus == nil { Spacer(); Spacer(); }
+                }
+                .padding(.horizontal, 30)
+                .frame(width: geometry.size.width, height: geometry.size.height)
             }
-            .padding(.horizontal, 30)
         }
         .scrollDisabled(focus == nil)
         .scrollIndicators(.hidden)
